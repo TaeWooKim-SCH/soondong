@@ -13,6 +13,7 @@ export default function HeaderNav() {
         alt="로고"
         width={400}
         height={0}
+        priority={true}
       />
       <section className="flex items-center">
         <div className="hidden space-x-7 mr-20 xl:block">
