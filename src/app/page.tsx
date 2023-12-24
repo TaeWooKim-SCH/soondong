@@ -16,10 +16,10 @@ export default function Home() {
       <div className="text-2xl font-bold text-light-black sm:text-3xl">
         {/* <WelcomeTyping /> */}
         <div>안녕하세요.</div>
-        <div><span className="text-main-blue-color">다양한 동아리</span>를 연결해주는</div>
-        <div><span className="text-main-blue-color">순동</span>입니다.</div>
+        <div><span className="text-blue">다양한 동아리</span>를 연결해주는</div>
+        <div><span className="text-blue">순동</span>입니다.</div>
       </div>
-      <Link className="py-3 px-9 bg-main-blue-color rounded-md text-white" href="/home">시작하기</Link>
+      <Link className="py-3 px-9 bg-blue rounded-md text-white" href="/home">시작하기</Link>
     </main>
   )
 }
