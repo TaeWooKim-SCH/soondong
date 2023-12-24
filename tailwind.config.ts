@@ -15,7 +15,12 @@ const config: Config = {
       },
     },
     colors: {
-      "bg-color": "var(--bg-white)"
+      "bg-color": "var(--bg-white)",
+      "main-blue-color": "var(--main-blue-color)",
+      "white": "#FFFFFF",
+      "black": "#000000",
+      "light-black": "242424",
+      "silver": "#8E9190"
     }
   },
   plugins: [],
