@@ -20,7 +20,7 @@ export default function HeaderNav() {
             <Link href={`/clubs?name=${item}`} key={item}>{item}</Link>
           ))}
         </div>
-        <div>
+        <div className="flex items-center">
           <Link
             className="text-xs py-1 px-4 border border-blue rounded-md mr-2 sm:text-sm sm:py-2 sm:px-7 sm:mr-5"
             href="/login"
