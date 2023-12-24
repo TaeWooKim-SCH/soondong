@@ -12,6 +12,7 @@ export default function Home() {
         alt="로고"
         width={400}
         height={0}
+        priority={true}
       />
       <div className="text-2xl font-bold text-light-black sm:text-3xl">
         {/* <WelcomeTyping /> */}
