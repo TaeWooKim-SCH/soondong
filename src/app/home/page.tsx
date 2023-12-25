@@ -3,7 +3,7 @@ import Layout from "../_components/Layouts/Layout";
 export default function Home() {
   return (
     <Layout>
-      <div></div>
+      <div>홈입니다.</div>
     </Layout>
   );
 }
