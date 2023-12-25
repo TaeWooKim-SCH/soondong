@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IoMenu } from "react-icons/io5";
+import { IoMenu, IoClose } from "react-icons/io5";
 
 export default function HeaderNav() {
-  const DesktopItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
+  const headerItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
 
   return (
     <header className="h-[100px] px-5 flex justify-between items-center sm:px-10">
@@ -17,7 +17,7 @@ export default function HeaderNav() {
       />
       <section className="flex items-center">
         <div className="hidden space-x-7 mr-20 xl:block">
-          {DesktopItems.map((item) => (
+          {headerItems.map((item) => (
             <Link href={`/clubs?name=${item}`} key={item}>{item}</Link>
           ))}
         </div>
@@ -33,6 +33,16 @@ export default function HeaderNav() {
         </div>
         <div className="ml-2 sm:ml-5 xl:hidden">
           <IoMenu className="sm:size-[40px]" size="30" color="#26539C" />
+        </div>
+        <div className="absolute top-0 right-[-300px] h-full bg-blue">
+          <div className="text-end mt-3 mr-3 mb-5">
+            <IoClose className="inline-block sm:size-[40px]" fill="white" size="30" />
+          </div>
+          <div className="px-20 flex flex-col items-center text-white sm:text-xl">
+            {headerItems.map((item) => (
+              <Link className="mb-5" href={`/clubs?name=${item}`} key={item}>{item}</Link>
+            ))}
+          </div>
         </div>
       </section>
     </header>
