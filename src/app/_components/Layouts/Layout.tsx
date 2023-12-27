@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/*  */}
       <HeaderNav />
       {/*  */}
-      { children }
+      <section className="px-10 py-10 sm:px-16 md:px-28 xl:px-44">{ children }</section>
       {/*  */}
       <Footer />
       {/*  */}
