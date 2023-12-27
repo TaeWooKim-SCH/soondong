@@ -1,3 +1,4 @@
+import Footer from "./Footer";
 import HeaderNav from "./HeaderNav";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -7,6 +8,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <HeaderNav />
       {/*  */}
       { children }
+      {/*  */}
+      <Footer />
       {/*  */}
     </main>
   );

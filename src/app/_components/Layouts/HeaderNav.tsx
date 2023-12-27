@@ -7,18 +7,20 @@ export default function HeaderNav() {
 
   return (
     <header className="h-[100px] px-5 flex justify-between items-center sm:px-10">
-      <Image
-        className="w-[100px] sm:w-[150px]"
-        src="/Logo.svg"
-        alt="로고"
-        width={400}
-        height={0}
-        priority={true}
-      />
+      <Link href="/home">
+        <Image
+          className="w-[100px] sm:w-[150px]"
+          src="/Logo.svg"
+          alt="로고"
+          width={400}
+          height={0}
+          priority={true}
+        />
+      </Link>
       <section className="flex items-center">
         <div className="hidden space-x-7 mr-20 xl:block">
           {headerItems.map((item) => (
-            <Link href={`/clubs?name=${item}`} key={item}>{item}</Link>
+            <Link href={`/clubs?category=${item}`} key={item}>{item}</Link>
           ))}
         </div>
         <div className="flex items-center">
