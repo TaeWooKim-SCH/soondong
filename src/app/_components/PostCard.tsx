@@ -10,6 +10,7 @@ export default function PostCard({ clubInfo }: PropsType) {
         alt="대표이미지"
         width={500}
         height={0}
+        priority={true}
       />
       <section className="px-4 py-3 bg-white rounded-b-md">
         <div className="font-bold mb-1">{clubInfo.club_name}</div>
