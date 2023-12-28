@@ -6,7 +6,7 @@ export default function HeaderNav() {
   const headerItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
 
   return (
-    <header className="h-[100px] px-5 flex justify-between items-center sm:px-10">
+    <header className="h-[10vh] px-5 flex justify-between items-center sm:px-10">
       <Link href="/home">
         <Image
           className="w-[100px] sm:w-[150px]"
