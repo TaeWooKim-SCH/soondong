@@ -1,15 +1,39 @@
 import Image from "next/image";
+import Link from "next/link";
 
-export default function PostCard() {
+export default function PostCard({ clubInfo }: PropsType) {
   return (
-    <main className="shadow-xl rounded-md">
-      <Image className="w-full rounded-t-md" src="/test-img1.jpg" alt="대표이미지" width={500} height={0} />
+    <Link href="/clubs/3" className="shadow-xl rounded-md transition-all hover:scale-105">
+      <Image
+        className="w-full rounded-t-md"
+        src={clubInfo.club_img_link}
+        alt="대표이미지"
+        width={500}
+        height={0}
+      />
       <section className="px-4 py-3 bg-white rounded-b-md">
-        <div className="font-bold mb-1">계츠비</div>
-        <div className="text-xs mb-1">순천향대 스키&레저 스포츠 동아리</div>
-        <div className="text-xs font-bold text-silver mb-3">마감</div>
-        <div className="text-xs text-white rounded-full bg-blue inline-block px-2 py-1">교양학술</div>
+        <div className="font-bold mb-1">{clubInfo.club_name}</div>
+        <div className="text-xs mb-1">{clubInfo.club_description}</div>
+        <div
+          className={`mb-3 text-xs font-bold ${
+            clubInfo.club_recruit_period === "마감" ? 'text-silver' : 'text-blue'} `
+          }
+        >{clubInfo.club_recruit_period}</div>
+        <div
+          className="text-xs text-white rounded-full bg-blue inline-block px-2 py-1"
+        >{clubInfo.club_category}</div>
       </section>
-    </main>
+    </Link>
   );
+}
+
+interface PropsType {
+  clubInfo: {
+    club_id: string;
+    club_name: string;
+    club_description: string;
+    club_img_link: string;
+    club_category: string;
+    club_recruit_period: string;
+  }
 }

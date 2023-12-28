@@ -6,7 +6,7 @@ export const clubsData = [
     club_description: "순천향대 스키&레저 스포츠 동아리",
     club_post: "wefwfe",
     club_img_link: "/test-img1.jpg",
-    club_recruit_period: "2024-01-10~2024-02-22",
+    club_recruit_period: "마감",
     club_like_count: 24,
     club_join_state: "accept",
     club_category: "교양학술"
@@ -18,7 +18,7 @@ export const clubsData = [
     club_description: "순천향대 흑인음악 동아리",
     club_post: "wefwfe",
     club_img_link: "/test-img2.jpg",
-    club_recruit_period: "2023-12-10~2023-12-22",
+    club_recruit_period: "D-6",
     club_like_count: 24,
     club_join_state: "accept",
     club_category: "공연예술"
@@ -30,7 +30,7 @@ export const clubsData = [
     club_description: "순천향대 스키&레저 스포츠 동아리",
     club_post: "wefwfe",
     club_img_link: "/test-img1.jpg",
-    club_recruit_period: "2024-01-10~2024-02-22",
+    club_recruit_period: "마감",
     club_like_count: 24,
     club_join_state: "accept",
     club_category: "교양학술"
@@ -42,7 +42,7 @@ export const clubsData = [
     club_description: "순천향대 흑인음악 동아리",
     club_post: "wefwfe",
     club_img_link: "/test-img2.jpg",
-    club_recruit_period: "2023-12-10~2023-12-22",
+    club_recruit_period: "D-12",
     club_like_count: 24,
     club_join_state: "accept",
     club_category: "공연예술"
@@ -54,7 +54,7 @@ export const clubsData = [
     club_description: "순천향대 흑인음악 동아리",
     club_post: "wefwfe",
     club_img_link: "/test-img2.jpg",
-    club_recruit_period: "2023-12-10~2023-12-22",
+    club_recruit_period: "D-8",
     club_like_count: 24,
     club_join_state: "accept",
     club_category: "공연예술"
