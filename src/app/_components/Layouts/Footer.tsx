@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="w-full h-[100px] bg-light-blue flex justify-evenly items-center">
+    <footer className="w-full h-[10vh] bg-light-blue flex justify-evenly items-center">
       <section>
         <Image className="w-[80px] sm:w-[100px]" src="/Logo.svg" alt="로고" width={400} height={0} />
       </section>

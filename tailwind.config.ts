@@ -21,7 +21,8 @@ const config: Config = {
       "white": "#FFFFFF",
       "black": "#000000",
       "light-black": "242424",
-      "silver": "#8E9190"
+      "silver": "#8E9190",
+      "yellow": "#FFE812"
     }
   },
   plugins: [],
