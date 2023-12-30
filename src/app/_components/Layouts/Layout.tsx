@@ -1,7 +1,17 @@
+'use client'
+
+import { useEffect } from "react";
 import Footer from "./Footer";
 import HeaderNav from "./HeaderNav";
+import { useSession } from "next-auth/react";
 
 export default function Layout({ children, className }: { children: React.ReactNode, className?: React.ReactNode }) {
+  const { data: session } = useSession();
+  
+  useEffect(() => {
+    console.log(session);
+  }, [session])
+
   return (
     <main className="bg-bg-color w-[100vw] min-h-full">
       {/*  */}

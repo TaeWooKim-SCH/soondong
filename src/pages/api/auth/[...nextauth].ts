@@ -16,6 +16,12 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = account.access_token
       }
       return token;
+    },
+    async signIn({ user, account, profile }) {
+      if (account?.provider === 'kakao' && user.name === 'null') {
+        return '/signup';
+      }
+      return '/home';
     }
   }
 };
