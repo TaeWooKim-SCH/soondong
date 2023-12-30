@@ -7,8 +7,11 @@ export default function KakaoBtn({ children }: { children: React.ReactNode }) {
   const {data: session} = useSession();
   
   const authFetch = async () => {
-    await signIn("kakao");
-    console.log(session);
+    await signIn("kakao", {callbackUrl: '/home'});
+    // await fetch('/api/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify(session)
+    // });
   }
 
   return (
