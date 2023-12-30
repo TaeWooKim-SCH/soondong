@@ -6,7 +6,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     Kakao({
       clientId: process.env.KAKAO_CLIENT_ID,
-      clientSecret: process.env.KAKAO_SECRET_ID
+      clientSecret: process.env.KAKAO_SECRET_ID,
+      authorization: 'https://kauth.kakao.com/oauth/authorize?lang=ko'
     }),
   ],
   callbacks: {

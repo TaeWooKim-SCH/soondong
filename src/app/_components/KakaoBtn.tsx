@@ -1,13 +1,14 @@
 'use client'
 
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 
 export default function KakaoBtn({ children }: { children: React.ReactNode }) {
+  const {data: session} = useSession();
+  
   const authFetch = async () => {
-    fetch('/api/auth/kakao', {
-      method: 'POST',
-      body: JSON.stringify('요청완료')
-    });
+    await signIn("kakao");
+    console.log(session);
   }
 
   return (
