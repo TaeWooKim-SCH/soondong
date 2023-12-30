@@ -10,6 +10,7 @@ export const authOptions: NextAuthOptions = {
       authorization: 'https://kauth.kakao.com/oauth/authorize?lang=ko'
     }),
   ],
+  secret: process.env.NEXT_AUTH_SECRET,
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
