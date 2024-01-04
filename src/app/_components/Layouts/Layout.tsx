@@ -8,8 +8,13 @@ import { useSession } from "next-auth/react";
 export default function Layout({ children, className }: { children: React.ReactNode, className?: React.ReactNode }) {
   const { data: session } = useSession();
   
-  useEffect(() => {
-    console.log(session);
+  useEffect(() => { // 회원 정보를 조회한 후 처음 회원가입한 것이면 회원가입 페이지로 리다이렉트
+    if (session) {
+      sessionStorage.setItem('loginInfo', JSON.stringify(session));
+    }
+    else {
+      sessionStorage.setItem('loginInfo', '');
+    }
   }, [session])
 
   return (
