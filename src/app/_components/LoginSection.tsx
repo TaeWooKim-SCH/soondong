@@ -6,12 +6,16 @@ import Link from "next/link";
 export default function LoginSection() {
   const { data: session, status } = useSession();
 
+  const signOutHandler = () => {
+    signOut();
+  }
+
   if (session) {
     return (
       <div>
         <button
           className="text-xs py-1 px-4 border border-blue rounded-md mr-2 sm:text-sm sm:py-2 sm:px-7 sm:mr-5"
-          onClick={() => signOut()}
+          onClick={signOutHandler}
         >로그아웃</button>
       </div>
     );
