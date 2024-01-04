@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function LoginSection() {
   const [isLogin, setIsLogin] = useState(() => {
-    if (sessionStorage.getItem('loginInfo')) return true;
+    if (typeof(window) !== 'undefined' ? sessionStorage.getItem('loginInfo') : null) return true;
     else return false;
   }); // 로그인 상태
 
