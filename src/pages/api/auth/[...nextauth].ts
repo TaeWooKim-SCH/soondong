@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
       authorization: 'https://kauth.kakao.com/oauth/authorize?lang=ko'
     }),
   ],
-  secret: process.env.NEXT_AUTH_SECRET,
+  secret: process.env.NEXT_AUTH_SECRET, // 프로덕션 모드에서는 시크릿이 필요함
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
