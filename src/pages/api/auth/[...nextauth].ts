@@ -18,11 +18,8 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async signIn({ user, account, profile }) {
-      if (account?.provider === 'kakao' && user.name === 'null') {
-        return '/signup';
-      }
-      return '/home';
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/home`;
     }
   }
 };
