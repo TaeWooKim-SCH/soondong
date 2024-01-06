@@ -8,7 +8,7 @@ export default function Home() {
     <Layout>
       <section className="mb-10">
         <Title className="mb-5">현재 모집중인 동아리</Title>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-10">
           {clubsData.map((clubInfo) => (
             <PostCard key={clubInfo.club_id} clubInfo={clubInfo} />
           ))}
