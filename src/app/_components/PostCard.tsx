@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function PostCard({ clubInfo }: PropsType) {
   return (
-    <Link href="/clubs/3" className="shadow-xl rounded-md transition-all bg-white hover:scale-105">
+    <Link href="/clubs/3" className="shadow-xl rounded-md transition-all bg-white hover:scale-[1.03]">
       <Image
         className="w-full rounded-t-md"
         src={clubInfo.club_img_link}
