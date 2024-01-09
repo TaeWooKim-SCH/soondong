@@ -17,8 +17,8 @@ export default function PostCard({ clubInfo }: PropsType) {
         <div className="text-xs mb-1">{clubInfo.club_description}</div>
         <div
           className={`mb-3 text-xs font-bold ${
-            clubInfo.club_recruit_period === "마감" ? 'text-silver' : 'text-blue'} `
-          }
+            clubInfo.club_recruit_period === "마감" ? 'text-silver' : 'text-blue'
+          }`}
         >{clubInfo.club_recruit_period}</div>
         <div
           className="text-xs text-white rounded-full bg-blue inline-block px-2 py-1"
