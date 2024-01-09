@@ -1,4 +1,6 @@
-import mysql from 'mysql';
+import mysql, { Connection } from 'mysql';
+
+let db: Connection;
 
 const connectionInfo = {
   host: 'localhost',
@@ -7,20 +9,11 @@ const connectionInfo = {
   database: 'soondong'
 };
 
-export async function handleMysql(query: string) {
-  const connection = mysql.createConnection(connectionInfo);
-  let result;
-  await connection.connect();
-
-  connection.query(query, (error, data, fields) => {
-    if (error) {
-      console.error(error);
-    }
-    else {
-      result = data;
-    }
-  })
-
-  connection.end();
-  return result;
+try {
+  db = mysql.createConnection(connectionInfo);
 }
+catch (err) {
+  console.error(err);
+}
+
+export { db };
