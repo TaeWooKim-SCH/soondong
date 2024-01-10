@@ -3,10 +3,10 @@ import mysql, { Connection } from 'mysql';
 let db: Connection;
 
 const connectionInfo = {
-  host: 'localhost',
-  user: 'root',
-  password: '0902',
-  database: 'soondong'
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 };
 
 try {
