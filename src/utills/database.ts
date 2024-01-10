@@ -1,4 +1,5 @@
-import mysql, { Connection } from 'mysql2';
+import mysql from 'mysql2';
+import type { Connection } from "mysql2";
 
 let db: Connection;
 
@@ -16,5 +17,6 @@ try {
 catch (err) {
   console.error(err);
 }
-
 export { db };
+
+
