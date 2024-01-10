@@ -3,5 +3,10 @@ namespace NodeJS {
     KAKAO_CLIENT_ID: string;
     KAKAO_SECRET_ID: string;
     NEXT_AUTH_SECRET: string;
+    MYSQL_HOST: string;
+    MYSQL_PORT: number;
+    MYSQL_USER: string;
+    MYSQL_PASSWORD: string;
+    MYSQL_DATABASE: string;
   }
 }

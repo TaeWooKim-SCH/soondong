@@ -1,17 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // webpack: (config, { isServer }) => {
-  //   if (!isServer) {
-  //     config.resolve = {
-  //       ...config.resolve,
-  //       fallback: {
-  //         net: false,
-  //         tls: false,
-  //       }
-  //     }
-  //   }
-  //   return config;
-  // }
-}
+const nextConfig = {}
 
 module.exports = nextConfig
