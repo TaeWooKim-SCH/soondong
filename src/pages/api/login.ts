@@ -5,8 +5,9 @@ import { getToken } from "next-auth/jwt";
 const secret = process.env.NEXT_AUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req, secret });
-  console.log(token);
+  // const token = await getToken({ req, secret });
+  // conso
+  // console.log(token);
   // if (token) {
   //   db.query(`select name from tb_member where name = ${token?.name};`, (err, result) => {
   //     if (err) {

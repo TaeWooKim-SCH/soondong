@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function KakaoBtn({ children }: { children: React.ReactNode }) {
   const loginHandler = () => {
-    signIn('kakao', { callbackUrl: '/signup/form' });
+    signIn('kakao');
   }
   
   return (
