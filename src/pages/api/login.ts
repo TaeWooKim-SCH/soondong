@@ -10,19 +10,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const token = await getToken({ req, secret });
       
       if (token) {
-        db.query(`select name from tb_member where name = '${token?.name}';`, (err, result) => {
+        // console.log(token);
+        db.query(`select id from tb_member where name = '${token?.email}';`, (err, result) => {
           if (err) {
             console.error(err);
-            db.end();
+            db.threadId && db.end(); // db가 열려있는지 확인하기 위해 threadId 메서드를 이용
             return res.status(500).send("내부 서버 오류");
           }
           else {
+            console.log(result);
             if (Array.isArray(result) && !result.length) {
-              db.end();
+              db.threadId && db.end();
               return res.redirect('/signup/form');
             }
             else {
-              db.end();
+              db.threadId && db.end();
               return res.redirect('/home');
             }
           }
