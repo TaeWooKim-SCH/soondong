@@ -12,9 +12,10 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.NEXT_AUTH_SECRET, // 프로덕션 모드에서는 시크릿이 필요함
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, profile }) {
       if (account) {
-        token.accessToken = account.access_token
+        token.accessToken = account.access_token;
+        // token.profile = profile;
       }
       return token;
     },

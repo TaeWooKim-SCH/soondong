@@ -5,19 +5,41 @@ import { getToken } from "next-auth/jwt";
 const secret = process.env.NEXT_AUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = await getToken({ req, secret });
-  if (token) {
-    db.execute(`select name from tb_member where name = '${token?.name}';`, (err, result) => {
-      if (err) {
-        console.error(err);
+  switch (req.method) {
+    case 'GET':
+      const token = await getToken({ req, secret });
+      
+      if (token) {
+        // console.log(token);
+        db.query(`select id from tb_member where name = '${token?.email}';`, (err, result) => {
+          if (err) {
+            console.error(err);
+            db.threadId && db.end(); // db가 열려있는지 확인하기 위해 threadId 메서드를 이용
+            return res.status(500).send("내부 서버 오류");
+          }
+          else {
+            console.log(result);
+            if (Array.isArray(result) && !result.length) {
+              db.threadId && db.end();
+              return res.redirect('/signup/form');
+            }
+            else {
+              db.threadId && db.end();
+              return res.redirect('/home');
+            }
+          }
+        });
       }
       else {
-        console.log(result);
-        if (Array.isArray(result) && !result.length) return res.redirect('/signup/form');
-        else return res.redirect('/home');
+        return res.redirect('/home').status(404);
       }
-    });
-  }
 
-  db.end();
+      break;
+    case 'POST':
+      console.log('post 요청');
+      break;
+    case 'DELETE':
+      console.log('DELETE 요청');
+      break;
+  }
 }
