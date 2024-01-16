@@ -10,31 +10,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const token = await getToken({ req, secret });
       
       if (token) {
-        // console.log(token);
-        db.query(`select id from tb_member where name = '${token?.email}';`, async (err, result) => {
-          if (err) {
-            console.error(err);
-            await db.end(); // db가 열려있는지 확인하기 위해 threadId 메서드를 이용
-            return res.status(500).send("내부 서버 오류");
+        try {
+          const connectDb = await db.promise().getConnection();
+          const result = await connectDb.query(`select id from tb_member where name = '${token?.email}';`);
+          console.log(result);
+          if (Array.isArray(result[0]) && !result[0].length) {
+            connectDb.release();
+            return res.redirect('/signup/form');
           }
           else {
-            console.log(result);
-            if (Array.isArray(result) && !result.length) {
-              await db.end();
-              return res.redirect('/signup/form');
-            }
-            else {
-              await db.end();
-              return res.redirect('/home');
-            }
+            connectDb.release();
+            return res.redirect('/home');
           }
-        });
+        }
+        catch (err) {
+          console.error(err);
+          return res.status(500).send("내부 서버 오류");
+        }
       }
       else {
         return res.redirect('/home').status(404);
       }
-
-      break;
     case 'POST':
       console.log('post 요청');
       break;

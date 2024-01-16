@@ -1,7 +1,7 @@
 import mysql from 'mysql2';
-import type { Connection } from "mysql2";
+import type { Connection, Pool } from "mysql2";
 
-let db: Connection;
+let db: Pool;
 
 const connectionInfo = {
   host: process.env.MYSQL_HOST,
@@ -12,7 +12,7 @@ const connectionInfo = {
 };
 
 try {
-  db = mysql.createConnection(connectionInfo);
+  db = mysql.createPool(connectionInfo);
 }
 catch (err) {
   console.error(err);
