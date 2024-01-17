@@ -5,6 +5,8 @@ import { getToken } from "next-auth/jwt";
 const secret = process.env.NEXT_AUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const token = await getToken({ req, secret });
+  console.log(token);
   switch (req.method) {
     case 'GET':
       const token = await getToken({ req, secret });
@@ -12,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (token) {
         try {
           const connectDb = await db.promise().getConnection();
-          const result = await connectDb.query(`select id from tb_member where name = '${token?.email}';`);
+          const result = await connectDb.query(`select * from tb_member where id = 'zop1234';`);
+          // const result = await connectDb.query(`select * from tb_member where name = '${token?.email}';`);
           console.log(result);
           if (Array.isArray(result[0]) && !result[0].length) {
             connectDb.release();
