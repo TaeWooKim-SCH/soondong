@@ -2,9 +2,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).redirect('/home'); // Method Not Allowed
+  // Method Not Allowed
+  if (req.method !== 'POST') {
+    return res.status(405).redirect('/home'); 
+  }
 
   try {
+    const body = JSON.parse(req.body);
+
+    if (!body.email) {
+      return res.status(400).send("잘못된 바디 정보");
+    }
+
     // Nodemailer transporter 생성
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -16,8 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // 전송할 이메일 내용 설정
     const mailOptions = {
-      from: 'zop123493@gmail.com',
-      to: 'zop1234@sch.ac.kr', //필자의 naver 계정에 보내보았다.
+      from: `${process.env.BUSINESS_NAME} <${process.env.ADMIN_EMAIL}>`,
+      to: body.email,
       subject: '테스트 이메일',
       text: '안녕하세요, 이것은 테스트 이메일입니다.',
     };
