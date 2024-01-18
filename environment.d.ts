@@ -8,5 +8,9 @@ namespace NodeJS {
     MYSQL_USER: string;
     MYSQL_PASSWORD: string;
     MYSQL_DATABASE: string;
+    BUSINESS_NAME: string;
+    ADMIN_EMAIL: string;
+    GOOGLE_APP_PASSWORD: string;
+    AES_SECRET_KEY: string;
   }
 }

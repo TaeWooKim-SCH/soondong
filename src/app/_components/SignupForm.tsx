@@ -21,10 +21,16 @@ export default function SignupForm() {
       </section>
       <SignupInput placeholder="비밀번호" />
       <SignupInput placeholder="비밀번호 확인" />
+      <SignupInput placeholder="이름(닉네임X)" />
       <SignupInput placeholder="학번" />
+      <SignupInput placeholder="전화번호('-'를 빼고 입력해주세요)" />
       <section>
         <SignupInput placeholder="학교 이메일"/>
         <button type="button" className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1">이메일 인증</button>
+      </section>
+      <section>
+        <SignupInput placeholder="인증번호"/>
+        <button type="button" className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1">확인</button>
       </section>
       <section className="mt-10">
         <div className="font-bold mb-1">약관동의</div>

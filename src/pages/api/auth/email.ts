@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
+import cryptoJS from 'crypto-js';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -15,6 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Nodemailer transporter 생성
+    let authCode = generateRandomCode();
+    console.log(authCode);
+    console.log(encrypt(authCode));
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -35,9 +39,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const info = await transporter.sendMail(mailOptions);
 
     console.log('이메일 전송 성공:', info.response);
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, auth_code: encrypt(authCode) });
   } catch (error) {
     console.error('이메일 전송 실패:', error);
     return res.status(500).json({ success: false, error });
   }
+}
+
+function generateRandomCode() {
+  const min = 100000;
+  const max = 999999;
+  const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return String(randomCode);
+}
+
+function encrypt(code: string) {
+  const encrypted = cryptoJS.AES.encrypt(code, process.env.AES_SECRET_KEY).toString();
+  return encrypted;
 }
