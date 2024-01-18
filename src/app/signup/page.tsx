@@ -12,10 +12,3 @@ export default function Signup() {
     </Layout>
   );
 }
-
-
-// export default function Signup() {
-//   return (
-//     <LoginLayout>카카오로 시작하기</LoginLayout>
-//   );
-// }
