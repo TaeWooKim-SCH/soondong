@@ -31,6 +31,7 @@ export default function SignupForm() {
     const encryptedCode = sessionStorage.getItem('email_auth_code');
     if (encryptedCode) { // 세션스토리지에 암호화된 인증 코드가 존재한다면
       const decryptedCode = decrypt(encryptedCode); // 인증 코드 복호화
+      // TODO: 순천향대 이메일만 허용하도록 코드 수정
       // TODO: 인증에 성공하면 입력 코드와 입력 확인 버튼을 비활성화 시켜야 함
       if (decryptedCode === code) { // 입력한 코드와 복호화된 코드가 같다면
         sessionStorage.removeItem('email_auth_code');
