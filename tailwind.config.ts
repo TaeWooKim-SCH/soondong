@@ -22,6 +22,7 @@ const config: Config = {
       "black": "#000000",
       "light-black": "242424",
       "silver": "#8E9190",
+      "light-silver": "#DADEDD",
       "yellow": "#FFE812"
     }
   },
