@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const body = req.body;
 
-    if (!body.email) {
+    if (!body.email || !body.email.includes('@sch.ac.kr')) {
       return res.status(400).send("잘못된 바디 정보");
     }
 
