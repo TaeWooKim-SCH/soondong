@@ -1,13 +1,16 @@
 'use client'
 
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import cryptoJS from 'crypto-js';
+import { throttle } from "lodash";
 
-import SelectColleage from "./SelectCollege";
 import SignupInput from "./SignupInput";
+import { collegeInfo } from "../_modules/data";
 
 export default function SignupForm() {
   // TODO: 유효성 검사
+  const [departs, setDeparts] = useState<string[]>([]);
   const {
       register,
       handleSubmit,
@@ -21,20 +24,29 @@ export default function SignupForm() {
       password_confirm: '',
       name: '',
       student_id: '',
-      school_college: '',
-      school_department: '',
+      school_college: '단과대 선택',
+      school_department: '학과 선택',
       phone_number: '',
       school_email: '',
       school_auth: false,
       school_auth_code: ''
     }
   });
+  const { onChange } = register('school_college', {
+    onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
+      if (e.target.value === '단과대 선택') {
+        return;
+      }
+      const result = collegeInfo.filter((college) => college.collegeName === e.target.value)[0].departList;
+      setDeparts(result);
+    }
+  });
 
+  // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
   const onSubmit: SubmitHandler<FormInputs> = (data) => console.log(data);
 
-  const emailAuthHandler = async (email: string) => {
-    // TODO: 쓰로틀 또는 디바운스 등을 이용해 요청을 제한해야 함
-    // TODO: 순천향대 이메일만 허용하도록 코드 수정
+  // 이메일 인증번호 전송 핸들러
+  const emailAuthHandler = throttle(async (email: string) => {
     if (!email.includes('@sch.ac.kr')) {
       return alert('학교 이메일을 입력해주세요.');
     }
@@ -53,13 +65,13 @@ export default function SignupForm() {
     } catch (err) {
       console.error('인증 요청에 실패했습니다.', err);
     }
-  }
+  }, 3000);
 
-  const emailAuthConfirmHandler = (code: string) => {
+  // 이메일 인증번호 확인 핸들러
+  const emailAuthConfirmHandler = throttle((code: string) => {
     const encryptedCode = sessionStorage.getItem('email_auth_code');
     if (encryptedCode) { // 세션스토리지에 암호화된 인증 코드가 존재한다면
       const decryptedCode = decrypt(encryptedCode); // 인증 코드 복호화
-      // TODO: 인증에 성공하면 입력 코드와 입력 확인 버튼을 비활성화 시켜야 함
       if (decryptedCode === code) { // 입력한 코드와 복호화된 코드가 같다면
         sessionStorage.removeItem('email_auth_code');
         setValue('school_auth', true);
@@ -70,7 +82,7 @@ export default function SignupForm() {
     } else {
       return alert('이메일을 입력하고 이메일 인증 버튼을 눌러주신 후 시도해주세요.');
     }
-  }
+  }, 3000);
 
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -82,7 +94,27 @@ export default function SignupForm() {
       <SignupInput placeholder="비밀번호 확인" register={{ ...register('password_confirm') }} />
       <SignupInput placeholder="이름 (닉네임X)" register={{ ...register('name') }} />
       <SignupInput placeholder="학번" register={{ ...register('student_id') }} />
-      <SelectColleage />
+      <section className="grid grid-cols-2 gap-5">
+        <select
+          className="px-1 py-2 mb-5 outline-none bg-bg-color border-b border-b-silver"
+          {...register('school_college')}
+          onChange={onChange}
+        >
+          <option value="단과대 선택">단과대 선택</option>
+          {collegeInfo.map((college, idx) => (
+            <option value={college.collegeName} key={idx}>{ college.collegeName }</option>
+          ))}
+        </select>
+        <select
+          className="px-1 py-2 mb-5 outline-none bg-bg-color border-b border-b-silver"
+          {...register('school_department')}
+        >
+          <option value="학과 선택">학과 선택</option>
+          {departs.map((depart, idx) => (
+            <option value={depart} key={idx}>{ depart }</option>
+          ))}
+        </select>
+      </section>
       <SignupInput placeholder="전화번호 ('-'를 빼고 입력해주세요)" register={{ ...register('phone_number') }} />
       <section>
         <SignupInput
@@ -98,7 +130,6 @@ export default function SignupForm() {
         >학교 인증</button>
       </section>
       <section>
-        {/* TODO: 이메일 인증에 성공하면 input 배경색 변경하고 버튼의 디자인도 바뀌도록 하기 */}
         <SignupInput
           className={`${watch('school_auth') ? 'bg-light-silver text-silver' : ''}`}
           placeholder="인증번호" register={{ ...register('school_auth_code') }}

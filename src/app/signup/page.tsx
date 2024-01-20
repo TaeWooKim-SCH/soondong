@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import Layout from "../_components/Layouts/Layout";
 import SignupForm from "../_components/SignupForm";
 
