@@ -11,6 +11,10 @@ import { collegeInfo } from "../_modules/data";
 export default function SignupForm() {
   // TODO: 유효성 검사
   const [departs, setDeparts] = useState<string[]>([]);
+  const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
+  const pwRegex = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
+  const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
   const {
       register,
       handleSubmit,
@@ -87,10 +91,22 @@ export default function SignupForm() {
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <section>
-        <SignupInput placeholder="아이디" register={{ ...register('id') }} />
+        <SignupInput
+          placeholder="아이디"
+          register={{...register('id', {
+            required: true,
+            pattern: idRegex
+          })}}
+        />
         <button type="button" className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1">중복확인</button>
       </section>
-      <SignupInput placeholder="비밀번호" register={{ ...register('password') }} />
+      <SignupInput
+        placeholder="비밀번호"
+        register={{...register('password', {
+          required: true,
+          pattern: pwRegex
+        })}}
+      />
       <SignupInput placeholder="비밀번호 확인" register={{ ...register('password_confirm') }} />
       <SignupInput placeholder="이름 (닉네임X)" register={{ ...register('name') }} />
       <SignupInput placeholder="학번" register={{ ...register('student_id') }} />
@@ -121,7 +137,10 @@ export default function SignupForm() {
           className={`${watch('school_auth') ? 'bg-light-silver text-silver' : ''}`}
           placeholder="학교 이메일"
           disabled={watch('school_auth')}
-          register={{ ...register('school_email') }}
+          register={{...register('school_email', {
+            required: true,
+            pattern: emailRegex
+          })}}
         />
         <button
           className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('school_auth') ? 'bg-blue text-white' : 'border border-blue text-blue'}`}          type="button"
