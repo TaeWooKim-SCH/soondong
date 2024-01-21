@@ -50,6 +50,25 @@ export default function SignupForm() {
     }
   });
 
+  // 아이디 중복확인 요청 핸들러
+  const existIdAuthHandler = async (id: string) => {
+    if (errors.id || !watch('id')) {
+      return alert(idMessage);
+    }
+
+    try {
+      const res = await fetch('api/auth/id', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id })
+      });
+    } catch (err) {
+      console.error('중복확인 요청에 실패했습니다.', err);
+    }
+  }
+
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
@@ -120,7 +139,11 @@ export default function SignupForm() {
               }
             })}}
           />
-          <button type="button" className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1">중복확인</button>
+          <button
+            className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1"
+            type="button"
+            onClick={() => existIdAuthHandler(watch('id'))}
+          >중복확인</button>
         </div>
         {errors.id && <div className="text-[0.65rem] text-blue">{errors.id.message}</div>}
       </section>
