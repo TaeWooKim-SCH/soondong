@@ -9,7 +9,7 @@ import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
 
 export default function SignupForm() {
-  // TODO: 아이디 중복확인
+  // TODO: 아이디 중복확인.
   const [departs, setDeparts] = useState<string[]>([]);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
   const idMessage = '아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자로 입력해야 합니다.';
