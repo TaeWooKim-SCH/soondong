@@ -1,4 +1,4 @@
-import Layout from "../_components/Layouts/Layout";
+import Layout from "../_components/layouts/Layout";
 import PostCard from "../_components/PostCard";
 import Title from "../_components/Title";
 import { clubsData } from "../_data/dummy";

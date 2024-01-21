@@ -1,4 +1,4 @@
-import Layout from "../_components/Layouts/Layout";
+import Layout from "../_components/layouts/Layout";
 
 export default function Clubs() {
   return (
