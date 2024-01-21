@@ -9,7 +9,6 @@ import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
 
 export default function SignupForm() {
-  // TODO: 유효성 검사
   // TODO: 아이디 중복확인
   const [departs, setDeparts] = useState<string[]>([]);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
@@ -17,7 +16,6 @@ export default function SignupForm() {
   const pwRegex = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
   const pwMessage = '비밀번호는 8~16자 영문, 숫자 조합으로 입력해야 합니다.';
   const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
   const {
       register,
       handleSubmit,
@@ -36,7 +34,9 @@ export default function SignupForm() {
       phone_number: '',
       school_email: '',
       school_auth: false,
-      school_auth_code: ''
+      school_auth_code: '',
+      agree_use: false,
+      agree_privacy: false
     },
     mode: 'onChange'
   });
@@ -53,8 +53,17 @@ export default function SignupForm() {
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
-    if (!watch('school_auth')) {
+    if (watch('student_id').length !== 8) {
+      return alert('학번을 다시 확인해주세요.');
+    }
+    else if (watch('school_college') === '단과대 선택' || watch('school_department') === '학과 선택') {
+      return alert('단과대와 학과를 선택해주세요.')
+    }
+    else if (!watch('school_auth')) {
       return alert('이메일 인증을 해주세요.');
+    }
+    else if (!watch('agree_use') || !watch('agree_privacy')) {
+      return alert('약관에 동의를 해주세요.');
     }
   };
 
@@ -146,10 +155,16 @@ export default function SignupForm() {
         {errors.password_confirm && <div className="text-[0.65rem] text-blue">{errors.password_confirm.message}</div>}
       </section>
       <section className="mb-3">
-        <SignupInput placeholder="이름 (닉네임X)" register={{ ...register('name') }} />
+        <SignupInput
+          placeholder="이름 (닉네임X)"
+          register={{ ...register('name', { required: true }) }}
+        />
       </section>
       <section className="mb-3">
-        <SignupInput placeholder="학번 (8자리)" register={{ ...register('student_id') }} />
+        <SignupInput
+          placeholder="학번 (8자리)"
+          register={{ ...register('student_id', { required: true }) }}
+        />
       </section>
       <section className="grid grid-cols-2 gap-5">
         <select
@@ -172,7 +187,10 @@ export default function SignupForm() {
           ))}
         </select>
       </section>
-      <SignupInput placeholder="전화번호 ('-'를 빼고 입력해주세요)" register={{ ...register('phone_number') }} />
+      <SignupInput
+        placeholder="전화번호 ('-'를 빼고 입력해주세요)"
+        register={{ ...register('phone_number') }}
+      />
       <section>
         <SignupInput
           className={`${watch('school_auth') ? 'bg-light-silver text-silver' : ''}`}
@@ -208,13 +226,21 @@ export default function SignupForm() {
         <ul>
           <li>
             <label>
-              <input className="mr-2" type="checkbox" />
+              <input
+                className="mr-2"
+                type="checkbox"
+                onClick={() => setValue('agree_use', !watch('agree_use'))}
+              />
               <span>[필수] 이용약관 동의</span>
             </label>
           </li>
           <li>
             <label>
-              <input className="mr-2" type="checkbox" />
+              <input
+                className="mr-2"
+                type="checkbox"
+                onClick={() => setValue('agree_privacy', !watch('agree_privacy'))}
+              />
               <span>[필수] 개인정보 수집 및 이용 동의</span>
             </label>
           </li>
@@ -226,7 +252,6 @@ export default function SignupForm() {
 }
 
 function decrypt(code: string) {
-  console.log(process.env.NEXT_PUBLIC_AES_SECRET_KEY);
   const decrypted = cryptoJS.AES.decrypt(code, process.env.NEXT_PUBLIC_AES_SECRET_KEY);
   return decrypted.toString(cryptoJS.enc.Utf8);
 }
@@ -243,6 +268,8 @@ interface FormInputs {
   school_email: string;
   school_auth: boolean;
   school_auth_code: string;
+  agree_use: boolean;
+  agree_privacy: boolean;
 }
 
 interface EmailAuthRes {
