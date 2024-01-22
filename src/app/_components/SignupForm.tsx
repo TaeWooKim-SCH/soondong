@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import cryptoJS from 'crypto-js';
 import { throttle } from "lodash";
 
 import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
+import { decrypt } from "@/utils/modules";
 
 export default function SignupForm() {
   // TODO: 아이디 중복확인 요청 로딩 처리
@@ -60,7 +60,7 @@ export default function SignupForm() {
 
     try {
       setLoading(true);
-      const res = await fetch('api/auth/id', {
+      const res = await fetch('/api/auth/id', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ export default function SignupForm() {
     }
     alert(`${email}로 인증번호를 전송했습니다. 메일함을 확인해주세요.`);
     try {
-      const res = await fetch('api/auth/email', {
+      const res = await fetch('/api/auth/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ export default function SignupForm() {
   }, 3000);
   
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log(data);
     if (!watch('id_auth')) {
       return alert('아이디 중복확인을 해주세요.');
@@ -138,6 +138,18 @@ export default function SignupForm() {
     }
     else if (!watch('agree_use') || !watch('agree_privacy')) {
       return alert('약관에 동의를 해주세요.');
+    }
+
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+    } catch (err) {
+      console.error('오류가 발생했습니다.', err);
     }
   };
   
@@ -292,11 +304,6 @@ export default function SignupForm() {
       <button className="mt-10 bg-blue text-white px-5 py-2 rounded-md font-normal">회원가입</button>
     </form>
   );
-}
-
-function decrypt(code: string) {
-  const decrypted = cryptoJS.AES.decrypt(code, process.env.NEXT_PUBLIC_AES_SECRET_KEY);
-  return decrypted.toString(cryptoJS.enc.Utf8);
 }
 
 interface FormInputs {

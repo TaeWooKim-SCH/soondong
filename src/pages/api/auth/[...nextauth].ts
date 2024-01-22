@@ -1,4 +1,4 @@
-import { db } from "@/utills/database";
+import { db } from "@/utils/database";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import Kakao from "next-auth/providers/kakao";
