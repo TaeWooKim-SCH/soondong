@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const body: SignupFormData = req.body;
 
   // 아이디 중복확인 -> 다른 툴을 이용해 접근할 때를 방지
-  const response = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/auth/id`, {
+  const response = await fetch(`${process.env.DOMAIN}/api/auth/id`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
