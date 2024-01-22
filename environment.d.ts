@@ -12,6 +12,6 @@ namespace NodeJS {
     ADMIN_EMAIL: string;
     GOOGLE_APP_PASSWORD: string;
     AES_SECRET_KEY: string;
-    NEXT_PUBLIC_AES_SECRET_KEY: string;
+    NEXT_PUBLIC_AES_EMAIL_SECRET_KEY: string;
   }
 }

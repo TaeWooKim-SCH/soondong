@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "../../utills/database";
+import { db } from "../../utils/database";
 import { getToken } from "next-auth/jwt";
 
 const secret = process.env.NEXT_AUTH_SECRET;

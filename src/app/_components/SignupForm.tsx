@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import cryptoJS from 'crypto-js';
 import { throttle } from "lodash";
 
 import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
+import { decrypt } from "@/utils/modules";
 
 export default function SignupForm() {
-  // TODO: 아이디 중복확인.
-  
+  // TODO: 아이디 중복확인 요청 로딩 처리
   const [departs, setDeparts] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
   const idMessage = '아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자로 입력해야 합니다.';
   const pwRegex = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
@@ -51,21 +51,23 @@ export default function SignupForm() {
       setDeparts(result);
     }
   });
-
+  
   // 아이디 중복확인 요청 핸들러
-  const existIdAuthHandler = async (id: string) => {
+  const existIdAuthHandler = throttle(async (id: string) => {
     if (errors.id || !watch('id')) {
       return alert(idMessage);
     }
 
     try {
-      const res = await fetch('api/auth/id', {
+      setLoading(true);
+      const res = await fetch('/api/auth/id', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })
       });
+      setLoading(false);
       if (res.status === 409) {
         return alert('이미 가입된 아이디입니다.');
       }
@@ -79,50 +81,29 @@ export default function SignupForm() {
     } catch (err) {
       console.error('중복확인 요청에 실패했습니다.', err);
     }
-  }
-
-  // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
-    if (!watch('id_auth')) {
-      return alert('아이디 중복확인을 해주세요.');
-    }
-    if (watch('student_id').length !== 8) {
-      return alert('학번을 다시 확인해주세요.');
-    }
-    else if (watch('school_college') === '단과대 선택' || watch('school_department') === '학과 선택') {
-      return alert('단과대와 학과를 선택해주세요.')
-    }
-    else if (!watch('school_auth')) {
-      return alert('이메일 인증을 해주세요.');
-    }
-    else if (!watch('agree_use') || !watch('agree_privacy')) {
-      return alert('약관에 동의를 해주세요.');
-    }
-  };
-
-  // 이메일 인증번호 전송 핸들러
+  }, 2000);
+  
   const emailAuthHandler = throttle(async (email: string) => {
     if (!email.includes('@sch.ac.kr') || errors.school_email) {
       return alert('학교 이메일을 입력해주세요.');
     }
     alert(`${email}로 인증번호를 전송했습니다. 메일함을 확인해주세요.`);
     try {
-      const res = await fetch('api/auth/email', {
+      const res = await fetch('/api/auth/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email })
       });
-  
+      
       const json: EmailAuthRes = await res.json();
       sessionStorage.setItem('email_auth_code', json.auth_code);
     } catch (err) {
       console.error('인증 요청에 실패했습니다.', err);
     }
   }, 3000);
-
+  
   // 이메일 인증번호 확인 핸들러
   const emailAuthConfirmHandler = throttle((code: string) => {
     const encryptedCode = sessionStorage.getItem('email_auth_code');
@@ -139,13 +120,45 @@ export default function SignupForm() {
       return alert('이메일을 입력하고 이메일 인증 버튼을 눌러주신 후 시도해주세요.');
     }
   }, 3000);
+  
+  // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    console.log(data);
+    if (!watch('id_auth')) {
+      return alert('아이디 중복확인을 해주세요.');
+    }
+    if (watch('student_id').length !== 8) {
+      return alert('학번을 다시 확인해주세요.');
+    }
+    else if (watch('school_college') === '단과대 선택' || watch('school_department') === '학과 선택') {
+      return alert('단과대와 학과를 선택해주세요.')
+    }
+    else if (!watch('school_auth')) {
+      return alert('이메일 인증을 해주세요.');
+    }
+    else if (!watch('agree_use') || !watch('agree_privacy')) {
+      return alert('약관에 동의를 해주세요.');
+    }
 
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+    } catch (err) {
+      console.error('오류가 발생했습니다.', err);
+    }
+  };
+  
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <section className="mb-3">
         <div>
           <SignupInput
-            className={`${watch('id_auth') ? 'bg-light-silver text-silver' : ''}`}
+            className={`${watch('id_auth') || loading ? 'bg-light-silver text-silver' : ''}`}
             placeholder="아이디"
             disabled={watch('id_auth')}
             register={{...register('id', {
@@ -157,10 +170,10 @@ export default function SignupForm() {
             })}}
           />
           <button
-            className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('id_auth') ? 'bg-blue text-white' : 'border border-blue text-blue'}`}
+            className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('id_auth') || loading ? 'bg-blue text-white' : 'border border-blue text-blue'}`}
             type="button"
             onClick={() => existIdAuthHandler(watch('id'))}
-            disabled={watch('id_auth')}
+            disabled={watch('id_auth') || loading}
           >중복확인</button>
         </div>
         {errors.id && <div className="text-[0.65rem] text-blue">{errors.id.message}</div>}
@@ -291,11 +304,6 @@ export default function SignupForm() {
       <button className="mt-10 bg-blue text-white px-5 py-2 rounded-md font-normal">회원가입</button>
     </form>
   );
-}
-
-function decrypt(code: string) {
-  const decrypted = cryptoJS.AES.decrypt(code, process.env.NEXT_PUBLIC_AES_SECRET_KEY);
-  return decrypted.toString(cryptoJS.enc.Utf8);
 }
 
 interface FormInputs {

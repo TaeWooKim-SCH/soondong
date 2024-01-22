@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from 'nodemailer';
-import cryptoJS from 'crypto-js';
+
+import { encrypt, generateRandomCode } from "@/utils/modules";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -43,16 +44,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error('이메일 전송 실패:', error);
     return res.status(500).json({ success: false, error });
   }
-}
-
-function generateRandomCode() {
-  const min = 100000;
-  const max = 999999;
-  const randomCode = Math.floor(Math.random() * (max - min + 1)) + min;
-  return String(randomCode);
-}
-
-function encrypt(code: string) {
-  const encrypted = cryptoJS.AES.encrypt(code, process.env.NEXT_PUBLIC_AES_SECRET_KEY);
-  return encrypted.toString();
 }

@@ -1,5 +1,6 @@
-import { db } from "@/utills/database";
 import { NextApiRequest, NextApiResponse } from "next";
+
+import { db } from "@/utils/database";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -7,12 +8,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).send('잘못된 요청 메서드');
   }
 
-  console.log(req.body);
-
   try {
     const connectDb = await db.promise().getConnection();
     const result = await connectDb.query(`select id from tb_member where id = '${req.body.id}';`);
-    console.log(result[0]);
 
     if (Array.isArray(result[0])) {
       if (result[0].length) { // 아이디 중복 발생
