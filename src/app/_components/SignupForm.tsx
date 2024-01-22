@@ -10,6 +10,7 @@ import { collegeInfo } from "../_modules/data";
 
 export default function SignupForm() {
   // TODO: 아이디 중복확인.
+  
   const [departs, setDeparts] = useState<string[]>([]);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
   const idMessage = '아이디는 영문자로 시작하는 영문자 또는 숫자 6~20자로 입력해야 합니다.';
@@ -25,6 +26,7 @@ export default function SignupForm() {
     } = useForm<FormInputs>({
     defaultValues: {
       id: '',
+      id_auth: false,
       password: '',
       password_confirm: '',
       name: '',
@@ -64,6 +66,16 @@ export default function SignupForm() {
         },
         body: JSON.stringify({ id })
       });
+      if (res.status === 409) {
+        return alert('이미 가입된 아이디입니다.');
+      }
+      else if (res.status === 200) {
+        setValue('id_auth', true);
+        return alert('사용 가능한 아이디입니다.');
+      }
+      else {
+        return alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     } catch (err) {
       console.error('중복확인 요청에 실패했습니다.', err);
     }
@@ -72,6 +84,9 @@ export default function SignupForm() {
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     console.log(data);
+    if (!watch('id_auth')) {
+      return alert('아이디 중복확인을 해주세요.');
+    }
     if (watch('student_id').length !== 8) {
       return alert('학번을 다시 확인해주세요.');
     }
@@ -130,7 +145,9 @@ export default function SignupForm() {
       <section className="mb-3">
         <div>
           <SignupInput
+            className={`${watch('id_auth') ? 'bg-light-silver text-silver' : ''}`}
             placeholder="아이디"
+            disabled={watch('id_auth')}
             register={{...register('id', {
               required: true,
               pattern: {
@@ -140,9 +157,10 @@ export default function SignupForm() {
             })}}
           />
           <button
-            className="ml-3 border border-blue text-blue text-sm rounded-md px-3 py-1"
+            className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('id_auth') ? 'bg-blue text-white' : 'border border-blue text-blue'}`}
             type="button"
             onClick={() => existIdAuthHandler(watch('id'))}
+            disabled={watch('id_auth')}
           >중복확인</button>
         </div>
         {errors.id && <div className="text-[0.65rem] text-blue">{errors.id.message}</div>}
@@ -225,7 +243,8 @@ export default function SignupForm() {
           })}}
         />
         <button
-          className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('school_auth') ? 'bg-blue text-white' : 'border border-blue text-blue'}`}          type="button"
+          className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('school_auth') ? 'bg-blue text-white' : 'border border-blue text-blue'}`}
+          type="button"
           onClick={() => emailAuthHandler(watch('school_email'))}
           disabled={watch('school_auth')}
         >학교 인증</button>
@@ -281,6 +300,7 @@ function decrypt(code: string) {
 
 interface FormInputs {
   id: string;
+  id_auth: boolean;
   password: string;
   password_confirm: string;
   name: string;
