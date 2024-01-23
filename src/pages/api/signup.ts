@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!response.ok) {
     return res.status(403).send('잘못된 접근입니다.');
   }
-  
+
   // const pw = decrypt(body.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY);
 
   // TODO: 아이디 비밀번호 대칭키 방식으로 암호화
@@ -42,17 +42,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 interface SignupFormData {
   id: string;
-  id_auth: boolean;
   password: string;
-  password_confirm: string;
   name: string;
+  phone_number: string;
   student_id: string;
   school_college: string;
   school_department: string;
-  phone_number: string;
-  school_email: string;
-  school_auth: boolean;
-  school_auth_code: string;
-  agree_use: boolean;
-  agree_privacy: boolean;
 }
