@@ -7,12 +7,12 @@ export function generateRandomCode() {
   return String(randomCode);
 }
 
-export function encrypt(code: string) {
-  const encrypted = cryptoJS.AES.encrypt(code, process.env.NEXT_PUBLIC_AES_EMAIL_SECRET_KEY);
+export function encrypt(code: string, key: string) {
+  const encrypted = cryptoJS.AES.encrypt(code, key);
   return encrypted.toString();
 }
 
-export function decrypt(code: string) {
-  const decrypted = cryptoJS.AES.decrypt(code, process.env.NEXT_PUBLIC_AES_EMAIL_SECRET_KEY);
+export function decrypt(code: string, key: string) {
+  const decrypted = cryptoJS.AES.decrypt(code, key);
   return decrypted.toString(cryptoJS.enc.Utf8);
 }

@@ -39,7 +39,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const info = await transporter.sendMail(mailOptions);
     console.log(authCode);
     console.log('이메일 전송 성공:', info.response);
-    return res.status(200).json({ success: true, auth_code: encrypt(authCode) });
+    return res.status(200).json({
+      success: true,
+      auth_code: encrypt(authCode, process.env.NEXT_PUBLIC_AES_EMAIL_SECRET_KEY)
+    });
   } catch (error) {
     console.error('이메일 전송 실패:', error);
     return res.status(500).json({ success: false, error });
