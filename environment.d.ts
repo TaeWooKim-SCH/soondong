@@ -13,5 +13,7 @@ namespace NodeJS {
     GOOGLE_APP_PASSWORD: string;
     AES_SECRET_KEY: string;
     NEXT_PUBLIC_AES_EMAIL_SECRET_KEY: string;
+    NEXT_PUBLIC_AES_ID_SECRET_KEY:string;
+    NEXT_PUBLIC_AES_PW_SECRET_KEY:string;
   }
 }

@@ -6,10 +6,10 @@ import { throttle } from "lodash";
 
 import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
-import { decrypt } from "@/utils/modules";
+import { decrypt, encrypt } from "@/utils/modules";
 
 export default function SignupForm() {
-  // TODO: 아이디 중복확인 요청 로딩 처리
+  // TODO: 아이디 중복확인 요청 로딩 처리, 아이디 비밀번호 암호화
   const [departs, setDeparts] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
@@ -108,7 +108,7 @@ export default function SignupForm() {
   const emailAuthConfirmHandler = throttle((code: string) => {
     const encryptedCode = sessionStorage.getItem('email_auth_code');
     if (encryptedCode) { // 세션스토리지에 암호화된 인증 코드가 존재한다면
-      const decryptedCode = decrypt(encryptedCode); // 인증 코드 복호화
+      const decryptedCode = decrypt(encryptedCode, process.env.NEXT_PUBLIC_AES_EMAIL_SECRET_KEY); // 인증 코드 복호화
       if (decryptedCode === code) { // 입력한 코드와 복호화된 코드가 같다면
         sessionStorage.removeItem('email_auth_code');
         setValue('school_auth', true);
@@ -141,13 +141,25 @@ export default function SignupForm() {
     }
 
     try {
+      setLoading(true);
+      const reqForm = {
+        id: data.id,
+        password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY),
+        student_id: data.student_id,
+        name: data.name,
+        phone_number: data.phone_number,
+        school_college: data.school_college,
+        school_department: data.school_department
+      };
+      console.log(reqForm);
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
-      })
+        body: JSON.stringify(reqForm)
+      });
+      setLoading(false);
     } catch (err) {
       console.error('오류가 발생했습니다.', err);
     }
