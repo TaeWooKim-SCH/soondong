@@ -6,7 +6,7 @@ import { throttle } from "lodash";
 
 import SignupInput from "./SignupInput";
 import { collegeInfo } from "../_modules/data";
-import { decrypt } from "@/utils/modules";
+import { decrypt, encrypt } from "@/utils/modules";
 
 export default function SignupForm() {
   // TODO: 아이디 중복확인 요청 로딩 처리, 아이디 비밀번호 암호화
@@ -142,12 +142,22 @@ export default function SignupForm() {
 
     try {
       setLoading(true);
+      const reqForm = {
+        id: data.id,
+        password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY),
+        student_id: data.student_id,
+        name: data.name,
+        phone_number: data.phone_number,
+        school_college: data.school_college,
+        school_department: data.school_department
+      };
+      console.log(reqForm);
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(reqForm)
       });
       setLoading(false);
     } catch (err) {
