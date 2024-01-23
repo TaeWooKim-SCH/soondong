@@ -1,6 +1,9 @@
 'use client'
 
 import { SubmitHandler, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { FaUser } from "react-icons/fa";
+import { RiLock2Fill } from "react-icons/ri";
 
 export default function LoginForm() {
   const { register, handleSubmit, watch, formState: { isSubmitting } } = useForm<FormInputs>({
@@ -9,11 +12,16 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log(data);
+    const res = await signIn('credentials', { ...data });
+    console.log(res);
   }
 
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)}>
-      <section className="mb-3">
+      <section className="mb-3 flex justify-center items-center">
+        <div className="mr-2">
+          <FaUser size="20" color="#26539C" />
+        </div>
         <input
           className={`px-1 py-2 mb-1 outline-none bg-bg-color border-b border-b-silver`}
           type='text'
@@ -21,10 +29,13 @@ export default function LoginForm() {
           {...register('id')}
         />
       </section>
-      <section>
+      <section className="flex justify-center items-center">
+        <div className="mr-2">
+          <RiLock2Fill size="20" color="#26539C" />
+        </div>
         <input
           className={`px-1 py-2 mb-1 outline-none bg-bg-color border-b border-b-silver`}
-          type='text'
+          type='password'
           placeholder="비밀번호"
           {...register('password')}
         />

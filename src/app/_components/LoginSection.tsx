@@ -17,6 +17,7 @@ export default function LoginSection() {
 
   else {
     if (session) {
+      console.log(session);
       return (
         <div className="flex justify-center items-center">
           <div className="mr-2 cursor-pointer sm:mr-5">
