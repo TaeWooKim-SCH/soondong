@@ -1,15 +1,17 @@
 'use client'
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { throttle } from "lodash";
 
 import SignupInput from "./SignupInput";
-import { collegeInfo } from "../_modules/data";
+import { collegeInfo } from "../../_modules/data";
 import { decrypt, encrypt } from "@/utils/modules";
+import LoadingUI from "../LoadingUI";
 
 export default function SignupForm() {
-  // TODO: 아이디 중복확인 요청 로딩 처리, 아이디 비밀번호 암호화
+  const router = useRouter();
   const [departs, setDeparts] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const idRegex = /^[a-z]+[a-z0-9]{5,19}$/g;
@@ -22,7 +24,7 @@ export default function SignupForm() {
       handleSubmit,
       watch,
       setValue,
-      formState: { isLoading, errors }
+      formState: { isSubmitting, errors }
     } = useForm<FormInputs>({
     defaultValues: {
       id: '',
@@ -83,6 +85,7 @@ export default function SignupForm() {
     }
   }, 2000);
   
+  // 이메일 인증번호 전송 요청 핸들러
   const emailAuthHandler = throttle(async (email: string) => {
     if (!email.includes('@sch.ac.kr') || errors.school_email) {
       return alert('학교 이메일을 입력해주세요.');
@@ -122,26 +125,28 @@ export default function SignupForm() {
   }, 3000);
   
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     console.log(data);
-    if (!watch('id_auth')) {
+    if (!data.id_auth) {
       return alert('아이디 중복확인을 해주세요.');
     }
-    if (watch('student_id').length !== 8) {
+    else if (!data.name) {
+      return alert('이름을 입력해주세요.');
+    }
+    else if (data.student_id.length !== 8) {
       return alert('학번을 다시 확인해주세요.');
     }
-    else if (watch('school_college') === '단과대 선택' || watch('school_department') === '학과 선택') {
+    else if (data.school_college === '단과대 선택' || data.school_department === '학과 선택') {
       return alert('단과대와 학과를 선택해주세요.')
     }
-    else if (!watch('school_auth')) {
+    else if (!data.school_auth) {
       return alert('이메일 인증을 해주세요.');
     }
-    else if (!watch('agree_use') || !watch('agree_privacy')) {
+    else if (!data.agree_use || !data.agree_privacy) {
       return alert('약관에 동의를 해주세요.');
     }
 
     try {
-      setLoading(true);
       const reqForm = {
         id: data.id,
         password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY),
@@ -151,7 +156,7 @@ export default function SignupForm() {
         school_college: data.school_college,
         school_department: data.school_department
       };
-      console.log(reqForm);
+
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: {
@@ -159,14 +164,22 @@ export default function SignupForm() {
         },
         body: JSON.stringify(reqForm)
       });
-      setLoading(false);
+
+      if (res.ok) {
+        alert('가입이 완료되었습니다.');
+        return router.push('/login');
+      }
+      else {
+        return alert('가입에 실패하였습니다.');
+      }
     } catch (err) {
       console.error('오류가 발생했습니다.', err);
     }
-  };
+  }, 2000);
   
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      { isSubmitting && <LoadingUI /> }
       <section className="mb-3">
         <div>
           <SignupInput
@@ -253,11 +266,13 @@ export default function SignupForm() {
           ))}
         </select>
       </section>
-      <SignupInput
-        placeholder="전화번호 ('-'를 빼고 입력해주세요)"
-        register={{ ...register('phone_number') }}
-      />
-      <section>
+      <section className="mb-3">
+        <SignupInput
+          placeholder="전화번호 ('-' 제외하고 입력)"
+          register={{ ...register('phone_number') }}
+        />
+      </section>
+      <section className="mb-3">
         <SignupInput
           className={`${watch('school_auth') ? 'bg-light-silver text-silver' : ''}`}
           placeholder="학교 이메일"

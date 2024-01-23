@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import Layout from "../_components/layouts/Layout";
-import SignupForm from "../_components/SignupForm";
+import SignupForm from "../_components/signup/SignupForm";
 
 export default function Signup() {
   return (
