@@ -126,7 +126,6 @@ export default function SignupForm() {
   
   // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
-    console.log(data);
     if (!data.id_auth) {
       return alert('아이디 중복확인을 해주세요.');
     }
