@@ -1,6 +1,7 @@
 'use client'
 
 import { SubmitHandler, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import { FaUser } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
 
@@ -11,6 +12,8 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     console.log(data);
+    const res = await signIn('credentials', { ...data });
+    console.log(res);
   }
 
   return (
