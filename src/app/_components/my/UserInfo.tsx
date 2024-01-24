@@ -4,7 +4,7 @@ import { CgProfile } from "react-icons/cg";
 
 export default async function UserInfo() {
   const session = await getServerSession(authOptions);
-  console.log(session);
+  
   return (
     <section className="flex justify-center items-center px-24 py-5 border border-blue rounded-md">
       <div>
