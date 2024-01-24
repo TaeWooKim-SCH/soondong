@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { db } from "@/utils/database";
-import { decrypt } from "@/utils/modules";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -24,9 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).send('잘못된 접근입니다.');
   }
 
-  // const pw = decrypt(body.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY);
-
-  // TODO: 아이디 비밀번호 대칭키 방식으로 암호화
   try {
     const connectDb = await db.promise().getConnection();
     const result = await connectDb.query(
