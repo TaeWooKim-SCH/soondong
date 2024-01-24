@@ -14,6 +14,12 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
+    if (!data.id) {
+      return alert('아이디를 입력해주세요.');
+    }
+    else if (!data.password) {
+      return alert('아이디를 입력해주세요.');
+    }
     try {
       const res = await signIn('credentials', {
         id: encrypt(data.id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY),
@@ -43,7 +49,7 @@ export default function LoginForm() {
           className={`px-1 py-2 mb-1 outline-none bg-bg-color border-b border-b-silver`}
           type='text'
           placeholder="아이디"
-          {...register('id')}
+          {...register('id', { required: true })}
         />
       </section>
       <section className="flex justify-center items-center">
@@ -54,7 +60,7 @@ export default function LoginForm() {
           className={`px-1 py-2 mb-1 outline-none bg-bg-color border-b border-b-silver`}
           type='password'
           placeholder="비밀번호"
-          {...register('password')}
+          {...register('password', { required: true })}
         />
       </section>
       <button className="mt-10 bg-blue text-white px-5 py-2 rounded-md font-normal">로그인</button>
