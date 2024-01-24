@@ -6,6 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
 import LoadingUI from "../LoadingUI";
 import { throttle } from "lodash";
+import { encrypt } from "@/utils/modules";
 
 export default function LoginForm() {
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormInputs>({
@@ -14,7 +15,11 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     try {
-      const res = await signIn('credentials', { ...data, redirect: false });
+      const res = await signIn('credentials', {
+        id: encrypt(data.id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY),
+        password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY),
+        redirect: false
+      });
       if (res?.error) {
         alert('아이디 또는 비밀번호가 일치하지 않습니다.');
         window.location.reload();
