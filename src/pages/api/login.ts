@@ -1,51 +1,40 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "../../utils/database";
-import { getToken } from "next-auth/jwt";
+import { RowDataPacket } from "mysql2";
 
-const secret = process.env.NEXT_AUTH_SECRET;
+import { db } from "../../utils/database";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // console.log(req.body);
-  const token = await getToken({ req, secret });
-  // console.log(token);
-  return res.json({...req.body, name: '김태우'});
+  // Method Not Allowed
+  if (req.method !== 'POST') {
+    return res.status(405).send('잘못된 요청 메서드')
+  }
+
+  // 아이디 조회
+  try {
+    const body: BodyTypes = req.body;
+    const connectDb = await db.promise().getConnection();
+    const [ row ] = await connectDb.query<RowDataPacket[]>(`select * from tb_member where id = '${body.id}'`);
+
+    if (!row.length) {
+      return res.status(404).send('유저 정보 없음');
+    }
+    else {
+      const result = row[0];
+      if (result.password === body.password) {
+        return res.status(200).json({ name: result.name, id: result.id });
+      }
+      else {
+        // return res.status(401).send('비밀번호 일치하지 않음');
+        return res.status(401).send('비밀번호 일치하지 않음');
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('데이터베이스 연결 오류');
+  }
 }
 
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-//   const token = await getToken({ req, secret });
-//   console.log(token);
-//   switch (req.method) {
-//     case 'GET':
-//       const token = await getToken({ req, secret });
-      
-//       if (token) {
-//         try {
-//           const connectDb = await db.promise().getConnection();
-//           const result = await connectDb.query(`select * from tb_member where id = 'zop1234';`);
-//           // const result = await connectDb.query(`select * from tb_member where name = '${token?.email}';`);
-//           console.log(result);
-//           if (Array.isArray(result[0]) && !result[0].length) {
-//             connectDb.release();
-//             return res.redirect('/signup/form');
-//           }
-//           else {
-//             connectDb.release();
-//             return res.redirect('/home');
-//           }
-//         }
-//         catch (err) {
-//           console.error(err);
-//           return res.status(500).send("내부 서버 오류");
-//         }
-//       }
-//       else {
-//         return res.redirect('/home').status(404);
-//       }
-//     case 'POST':
-//       console.log('post 요청');
-//       break;
-//     case 'DELETE':
-//       console.log('DELETE 요청');
-//       break;
-//   }
-// }
+interface BodyTypes {
+  id: string;
+  password: string;
+}

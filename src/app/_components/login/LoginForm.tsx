@@ -4,20 +4,32 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { FaUser } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
+import LoadingUI from "../LoadingUI";
+import { throttle } from "lodash";
 
 export default function LoginForm() {
-  const { register, handleSubmit, watch, formState: { isSubmitting } } = useForm<FormInputs>({
+  const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormInputs>({
     defaultValues: { id: '', password: ''}
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    console.log(data);
-    const res = await signIn('credentials', { ...data });
-    console.log(res);
-  }
+  const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
+    try {
+      const res = await signIn('credentials', { ...data, redirect: false });
+      if (res?.error) {
+        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+        window.location.reload();
+      }
+      else {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('로그인 실패', err);
+    }
+  }, 2000);
 
   return (
     <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)}>
+      {isSubmitting && <LoadingUI />}
       <section className="mb-3 flex justify-center items-center">
         <div className="mr-2">
           <FaUser size="20" color="#26539C" />
