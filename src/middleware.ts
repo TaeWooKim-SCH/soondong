@@ -7,13 +7,18 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
-  if (pathname === '/' || pathname.startsWith('/login') || pathname.startsWith('/signup')) {
-    if (token) {
-      return NextResponse.redirect(new URL('/home', req.url))
+  if (token) {
+    if (pathname === '/' || pathname.startsWith('/login') || pathname.startsWith('/signup')) {
+      return NextResponse.redirect(new URL('/home', req.url));
+    }
+  }
+  else {
+    if (pathname.startsWith('/my')) {
+      return NextResponse.redirect(new URL('/home', req.url));
     }
   }
 }
 
 export const config = {
-  mather: ['/', '/login', '/signup']
+  mather: ['/', '/login', '/signup', '/my']
 }
