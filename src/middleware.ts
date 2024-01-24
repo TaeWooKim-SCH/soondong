@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
-  if (pathname === '/signup' || pathname.startsWith('/login')) {
+  if (pathname === '/' || pathname.startsWith('/login') || pathname.startsWith('/signup')) {
     if (token) {
       return NextResponse.redirect(new URL('/home', req.url))
     }
@@ -15,5 +15,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  mather: ['/login', '/signup']
+  mather: ['/', '/login', '/signup']
 }

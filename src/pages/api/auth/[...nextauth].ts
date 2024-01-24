@@ -21,6 +21,12 @@ export const authOptions: NextAuthOptions = {
             return user;
           }
           else {
+            if (res.status === 404) {
+              throw new Error('유저 정보 없음');
+            }
+            else if (res.status === 401) {
+              throw new Error('비밀번호 일치하지 않음')
+            }
             return null;
           }
         }
