@@ -20,9 +20,9 @@ export default function LoginSection() {
       console.log(session);
       return (
         <div className="flex justify-center items-center">
-          <div className="mr-2 cursor-pointer sm:mr-5">
+          <Link className="mr-2 cursor-pointer sm:mr-5" href="/my">
             <CgProfile className="sm:size-[40px]" color="#26539C" size="30" />
-          </div>
+          </Link>
           <button
             className="text-xs py-1 px-4 border border-blue rounded-md mr-2 sm:text-sm sm:py-2 sm:px-7 sm:mr-5"
             onClick={signOutHandler}
