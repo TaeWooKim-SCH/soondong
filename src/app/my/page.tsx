@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Layout from "../_components/layouts/Layout";
-import UserInfo from "../_components/my/UserInfo";
+import UserInfo from "./_components/UserInfo";
 
 export default function My() {
   return (

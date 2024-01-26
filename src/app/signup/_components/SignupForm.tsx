@@ -8,7 +8,7 @@ import { throttle } from "lodash";
 import SignupInput from "./SignupInput";
 import { collegeInfo } from "../../_modules/data";
 import { decrypt, encrypt } from "@/utils/modules";
-import LoadingUI from "../LoadingUI";
+import LoadingUI from "../../_components/LoadingUI";
 
 export default function SignupForm() {
   const router = useRouter();
