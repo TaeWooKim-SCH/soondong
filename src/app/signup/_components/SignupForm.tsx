@@ -20,12 +20,12 @@ export default function SignupForm() {
   const pwMessage = '비밀번호는 8~16자 영문, 숫자 조합으로 입력해야 합니다.';
   const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
   const {
-      register,
-      handleSubmit,
-      watch,
-      setValue,
-      formState: { isSubmitting, errors }
-    } = useForm<FormInputs>({
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { isSubmitting, errors }
+  } = useForm<FormInputs>({
     defaultValues: {
       id: '',
       id_auth: false,
@@ -44,6 +44,8 @@ export default function SignupForm() {
     },
     mode: 'onChange'
   });
+
+  // 단과대를 선택했을 때 학과 선택의 데이터를 변경시키기 위한 change 함수 커스텀
   const { onChange } = register('school_college', {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (e.target.value === '단과대 선택') {
@@ -124,7 +126,7 @@ export default function SignupForm() {
     }
   }, 3000);
   
-  // 회원가입 요청 핸들러 -> 쓰로틀 적용하기
+  // 회원가입 요청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     if (!data.id_auth) {
       return alert('아이디 중복확인을 해주세요.');
