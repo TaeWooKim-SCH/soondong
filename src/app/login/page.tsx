@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import Layout from "../_components/layouts/Layout";
-import LoginForm from "../_components/login/LoginForm";
+import LoginForm from "./_components/LoginForm";
 
 export default function Login() {
   return (

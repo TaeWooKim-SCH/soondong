@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { FaUser } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
-import LoadingUI from "../LoadingUI";
+import LoadingUI from "../../_components/LoadingUI";
 import { throttle } from "lodash";
 import { encrypt } from "@/utils/modules";
 
