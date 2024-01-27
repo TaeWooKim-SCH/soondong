@@ -20,8 +20,8 @@ export default function ClubAddForm() {
       club_description: '',
       club_post: '',
       club_recruit_period: '모집 방식 선택',
-      period_start: '',
-      period_end: ''
+      period_start: '연도-월-일',
+      period_end: '연도-월-일'
     },
     mode: 'onChange'
   });
@@ -45,6 +45,25 @@ export default function ClubAddForm() {
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     console.log(data);
+    // 필수 입력 요소 검사
+    if (data.club_category === '카테고리 선택') {
+      return alert('동아리 카테고리를 선택해주세요.');
+    }
+    else if (data.club_recruit_period === '모집 방식 선택') {
+      return alert('동아리 모집 방식을 선택해주세요.');
+    }
+    else if (data.club_recruit_period === '정기모집' && (
+      data.period_start === '연도-월-일' || data.period_end === '연도-월-일'
+    )) {
+      return alert('동아리 모집 기간을 선택해주세요.');
+    }
+
+    const result = { ...data };
+    // 최종적으로 정기 모집인지 상시 모집인지 재확인
+    if (data.club_recruit_period !== "정기 모집") {
+      result.period_start = '연도-월-일';
+      result.period_end = '연도-월-일';
+    }
     return alert(data);
   })
 
@@ -95,7 +114,7 @@ export default function ClubAddForm() {
         <input
           className="px-3 py-2 rounded-md outline-none w-full border border-silver bg-white"
           type="file"
-          {...register('club_img')}
+          {...register('club_img', { required: true })}
         />
       </section>
       <section className="mb-10">
@@ -104,7 +123,7 @@ export default function ClubAddForm() {
           <section>
             <select
               className="px-3 py-2 mr-5 rounded-md outline-none border border-silver"
-              {...register('club_recruit_period')}
+              {...register('club_recruit_period', { required: true })}
               onChange={onChange}
             >
               <option value="모집 방식 선택">모집 방식 선택</option>
