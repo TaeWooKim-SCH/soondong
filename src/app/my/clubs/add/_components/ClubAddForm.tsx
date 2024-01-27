@@ -59,11 +59,12 @@ export default function ClubAddForm() {
     }
 
     const result = { ...data };
-    // 최종적으로 정기 모집인지 상시 모집인지 재확인
-    if (data.club_recruit_period !== "정기 모집") {
-      result.period_start = '연도-월-일';
-      result.period_end = '연도-월-일';
+    try {
+
+    } catch (err) {
+      console.error('개설 요청 실패', err);
     }
+
     return alert(data);
   })
 
@@ -136,12 +137,14 @@ export default function ClubAddForm() {
               <input
                 className="px-1 py-2 outline-none bg-bg-color border-b border-b-silver"
                 type="date"
+                value={watch('period_start')}
                 {...register('period_start')}
               />
               <div className="mx-2 font-bold text-lg">~</div>
               <input
                 className="px-1 py-2 outline-none bg-bg-color border-b border-b-silver"
                 type="date"
+                value={watch('period_end')}
                 {...register('period_end')}
               />
             </section>
