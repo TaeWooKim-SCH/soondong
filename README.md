@@ -1,6 +1,7 @@
 # SOONDONG (2023.12.23 ~ 진행중)
 순천향대학교 동아리 통합 관리 플랫폼입니다.
 풀스택으로 진행중입니다.
+<a href="https://www.notion.so/tae-woo/Next-js-SCH-CLUB-Solo-fbc2498a967849d38f26415b5f583e74?pvs=4">기획 링크</a>
 
 # Stack
 - Typescript
