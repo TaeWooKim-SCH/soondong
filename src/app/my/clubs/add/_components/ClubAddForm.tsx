@@ -29,7 +29,7 @@ export default function ClubAddForm() {
   });
 
   // 모집 방식을 선택했을 때 기간을 활성화시키기 위한 change 함수 커스텀
-  const { onChange } = register('club_recruit_period', {
+  const periodChangeHandler = register('club_recruit_period', {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (e.target.value === "정기모집") {
         setIsPeriod(true);
@@ -43,6 +43,21 @@ export default function ClubAddForm() {
       }
     }
   });
+
+  // 동아리 포스터 업로드 핸들러
+  const clubImgUploadHandler = register('club_img', {
+    onChange: async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const formData = new FormData();
+        formData.append('club_img', e.target.files[0]);
+        const res = await fetch('/api/clubs/add-img', {
+          method: 'POST',
+          // headers: { "Content-Type": "multipart/form-data" },
+          body: formData
+        })
+      }
+    }
+  })
 
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
@@ -61,12 +76,15 @@ export default function ClubAddForm() {
     }
 
     const result = { ...data };
+    const clubImg = new FormData();
+    clubImg.append('club_img', data.club_img[0]);
+    result.club_img = clubImg;
+    console.log(result.club_img);
     try {
       const res = await fetch('/api/clubs/add', {
         method: 'POST',
-        // headers: { 'Content-Type': 'appliction/json' },
-        headers: { "Content-Type": "multipart/form-data" },
-        body: result
+        headers: { 'Content-Type': 'appliction/json' },
+        body: JSON.stringify(result)
       });
     } catch (err) {
       console.error('개설 요청 실패', err);
@@ -121,6 +139,7 @@ export default function ClubAddForm() {
           className="px-3 py-2 rounded-md outline-none w-full border border-silver bg-white"
           type="file"
           {...register('club_img', { required: true })}
+          onChange={clubImgUploadHandler.onChange}
         />
       </section>
       <section className="mb-10">
@@ -130,7 +149,7 @@ export default function ClubAddForm() {
             <select
               className="px-3 py-2 mr-5 rounded-md outline-none border border-silver"
               {...register('club_recruit_period', { required: true })}
-              onChange={onChange}
+              onChange={periodChangeHandler.onChange}
             >
               <option value="모집 방식 선택">모집 방식 선택</option>
               <option value="상시모집">상시모집</option>

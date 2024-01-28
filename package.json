@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@types/crypto-js": "^4.2.1",
+    "@types/formidable": "^3.4.5",
     "@types/lodash": "^4.14.202",
     "@types/nodemailer": "^6.4.14",
+    "aws-sdk": "^2.1545.0",
     "crypto-js": "^4.2.0",
+    "formidable": "^3.5.1",
     "lodash": "^4.17.21",
     "mysql2": "^3.7.0",
     "next": "14.0.4",
@@ -24,7 +27,7 @@
     "react-icons": "^4.12.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.8",
+    "@types/node": "^20.11.9",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
