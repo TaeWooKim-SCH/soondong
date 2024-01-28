@@ -29,6 +29,7 @@ export default function ClubAddForm() {
   });
 
   // 모집 방식을 선택했을 때 기간을 활성화시키기 위한 change 함수 커스텀
+  // TODO: 이미지를 업로드할 때마다가 아닌 개설신청을 했을 때 요청으로 변경
   const periodChangeHandler = register('club_recruit_period', {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (e.target.value === "정기모집") {
