@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { throttle } from "lodash";
 import { useState } from "react";
 
+import LoadingUI from "@/app/_components/LoadingUI";
+
 export default function ClubAddForm() {
   const clubsCategory = ['공연예술', '종교', '봉사', '교양학술', '체육', '전시창작', '준동아리'];
   const [isPeriod, setIsPeriod] = useState<boolean>(false);
@@ -40,7 +42,7 @@ export default function ClubAddForm() {
         return;
       }
     }
-  })
+  });
 
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
@@ -60,13 +62,16 @@ export default function ClubAddForm() {
 
     const result = { ...data };
     try {
-
+      const res = await fetch('/api/clubs/add', {
+        method: 'POST',
+        // headers: { 'Content-Type': 'appliction/json' },
+        headers: { "Content-Type": "multipart/form-data" },
+        body: result
+      });
     } catch (err) {
       console.error('개설 요청 실패', err);
     }
-
-    return alert(data);
-  })
+  });
 
   return (
     <form className="grid grid-cols-1 gap-5" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -137,14 +142,12 @@ export default function ClubAddForm() {
               <input
                 className="px-1 py-2 outline-none bg-bg-color border-b border-b-silver"
                 type="date"
-                value={watch('period_start')}
                 {...register('period_start')}
               />
               <div className="mx-2 font-bold text-lg">~</div>
               <input
                 className="px-1 py-2 outline-none bg-bg-color border-b border-b-silver"
                 type="date"
-                value={watch('period_end')}
                 {...register('period_end')}
               />
             </section>
@@ -152,6 +155,7 @@ export default function ClubAddForm() {
         </article>
       </section>
       <button className="bg-blue py-2 w-[100px] mx-auto rounded-md text-white text-bold">개설신청</button>
+      { isSubmitting && <LoadingUI /> }
     </form>
   );
 }
