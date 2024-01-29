@@ -31,8 +31,6 @@ export default function ClubAddForm() {
   });
 
   // 모집 방식을 선택했을 때 기간을 활성화시키기 위한 change 함수 커스텀
-  // TODO: 이미지를 업로드할 때마다가 아닌 개설신청을 했을 때 요청으로 변경
-  // TODO: 블로깅
   const periodChangeHandler = register('club_recruit_period', {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (e.target.value === "정기모집") {
@@ -47,23 +45,6 @@ export default function ClubAddForm() {
       }
     }
   });
-
-  // 동아리 포스터 업로드 핸들러
-  const clubImgUploadHandler = register('club_img', {
-    onChange: async (e: React.ChangeEvent<HTMLInputElement>) => {
-      
-    }
-  })
-
-  // if (e.target.files) {
-  //   const formData = new FormData();
-  //   formData.append('club_img', e.target.files[0]);
-  //   const res = await fetch('/api/clubs/add-img', {
-  //     method: 'POST',
-  //     // headers: { "Content-Type": "multipart/form-data" },
-  //     body: formData
-  //   })
-  // }
 
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
@@ -98,32 +79,36 @@ export default function ClubAddForm() {
     } catch (err) {
       console.error('이미지 업로드 실패', err);
     }
-
-    try {
-      const body = {
-        club_name: data.club_name,
-        club_category: data.club_category,
-        club_description: data.club_description,
-        club_post: data.club_post,
-        club_recruit_period: data.club_recruit_period,
-        period_start: data.period_start,
-        period_end: data.period_end,
-        club_img_url: data.club_img_url
-      };
-
-      const res = await fetch('/api/clubs/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'appliction/json' },
-        body: JSON.stringify(body)
-      });
-
-      if (res.ok) {
-        return router.push('/my/clubs');
-      } else {
-        return alert('동아리 개설 요청에 실패했습니다.');
+    if (watch('club_img_url')) {
+      try {
+        const body = {
+          club_name: data.club_name,
+          club_category: data.club_category,
+          club_description: data.club_description,
+          club_post: data.club_post,
+          club_recruit_period: data.club_recruit_period,
+          period_start: data.period_start,
+          period_end: data.period_end,
+          club_img_url: watch('club_img_url')
+        };
+  
+        const res = await fetch('/api/clubs/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'appliction/json' },
+          body: JSON.stringify(body)
+        });
+  
+        if (res.ok) {
+          alert('동아리 개설 신청되었습니다. 승인까지 최대 3일 정도 소요될 수 있습니다.');
+          return router.push('/my/clubs');
+        } else {
+          return alert('동아리 개설 요청에 실패했습니다.');
+        }
+      } catch (err) {
+        console.error('개설 요청 실패', err);
       }
-    } catch (err) {
-      console.error('개설 요청 실패', err);
+    } else {
+      return alert('동아리 포스터 업로드에 실패하였습니다. 새로고침 후 다시 시도해주세요.');
     }
   });
 
@@ -175,7 +160,6 @@ export default function ClubAddForm() {
           className="px-3 py-2 rounded-md outline-none w-full border border-silver bg-white"
           type="file"
           {...register('club_img')}
-          onChange={clubImgUploadHandler.onChange}
         />
       </section>
       <section className="mb-10">
