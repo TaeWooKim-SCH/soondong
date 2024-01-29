@@ -17,8 +17,8 @@ namespace NodeJS {
     NEXT_PUBLIC_AES_ID_SECRET_KEY: string;
     NEXT_PUBLIC_AES_PW_SECRET_KEY:string;
     AWS_REGION: stirng;
-    AWS_ACCESS_KEY: string;
-    AWS_SECRET_KEY: string;
+    AWS_ACCESS_KEY_ID: string;
+    AWS_ACCESS_SECRET_KEY_ID: string;
     AWS_BUCKET_NAME: string;
   }
 }

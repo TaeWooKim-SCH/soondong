@@ -12,8 +12,8 @@ export const config = {
 
 const s3 = new S3({
   region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_ACCESS_SECRET_KEY_ID,
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
