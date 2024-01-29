@@ -6,7 +6,7 @@ export default function PostCard({ clubInfo }: PropsType) {
     <Link href="/clubs/3" className="shadow-xl rounded-md transition-all bg-white hover:scale-[1.03]">
       <Image
         className="w-full rounded-t-md"
-        src={clubInfo.club_img_link}
+        src={clubInfo.club_img_url}
         alt="대표이미지"
         width={500}
         height={0}
@@ -31,10 +31,14 @@ export default function PostCard({ clubInfo }: PropsType) {
 interface PropsType {
   clubInfo: {
     club_id: string;
+    club_admin_id: string;
     club_name: string;
     club_description: string;
-    club_img_link: string;
-    club_category: string;
+    club_post: string;
+    club_img_url: string;
     club_recruit_period: string;
+    club_like_count: number;
+    club_join_state: string;
+    club_category: string;
   }
 }
