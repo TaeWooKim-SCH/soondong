@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { throttle } from "lodash";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { useState } from "react";
 import LoadingUI from "@/app/_components/LoadingUI";
 
 export default function ClubAddForm() {
+  const router = useRouter();
   const clubsCategory = ['공연예술', '종교', '봉사', '교양학술', '체육', '전시창작', '준동아리'];
   const [isPeriod, setIsPeriod] = useState<boolean>(false);
   const {
@@ -108,11 +110,18 @@ export default function ClubAddForm() {
         period_end: data.period_end,
         club_img_url: data.club_img_url
       };
+
       const res = await fetch('/api/clubs/add', {
         method: 'POST',
         headers: { 'Content-Type': 'appliction/json' },
         body: JSON.stringify(body)
       });
+
+      if (res.ok) {
+        return router.push('/my/clubs');
+      } else {
+        return alert('동아리 개설 요청에 실패했습니다.');
+      }
     } catch (err) {
       console.error('개설 요청 실패', err);
     }
