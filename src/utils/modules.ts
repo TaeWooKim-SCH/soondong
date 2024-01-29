@@ -7,6 +7,10 @@ export function generateRandomCode() {
   return String(randomCode);
 }
 
+export function generateRandomString() {
+  return Math.random().toString(16).substring(2);
+}
+
 export function encrypt(code: string, key: string) {
   const encrypted = cryptoJS.AES.encrypt(code, key);
   return encrypted.toString();

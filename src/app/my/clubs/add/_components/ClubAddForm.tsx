@@ -22,14 +22,15 @@ export default function ClubAddForm() {
       club_description: '',
       club_post: '',
       club_recruit_period: '모집 방식 선택',
-      period_start: '연도-월-일',
-      period_end: '연도-월-일'
+      period_start: '',
+      period_end: ''
     },
     mode: 'onChange'
   });
 
   // 모집 방식을 선택했을 때 기간을 활성화시키기 위한 change 함수 커스텀
   // TODO: 이미지를 업로드할 때마다가 아닌 개설신청을 했을 때 요청으로 변경
+  // TODO: 블로깅
   const periodChangeHandler = register('club_recruit_period', {
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (e.target.value === "정기모집") {
@@ -48,17 +49,19 @@ export default function ClubAddForm() {
   // 동아리 포스터 업로드 핸들러
   const clubImgUploadHandler = register('club_img', {
     onChange: async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const formData = new FormData();
-        formData.append('club_img', e.target.files[0]);
-        const res = await fetch('/api/clubs/add-img', {
-          method: 'POST',
-          // headers: { "Content-Type": "multipart/form-data" },
-          body: formData
-        })
-      }
+      
     }
   })
+
+  // if (e.target.files) {
+  //   const formData = new FormData();
+  //   formData.append('club_img', e.target.files[0]);
+  //   const res = await fetch('/api/clubs/add-img', {
+  //     method: 'POST',
+  //     // headers: { "Content-Type": "multipart/form-data" },
+  //     body: formData
+  //   })
+  // }
 
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
@@ -70,22 +73,45 @@ export default function ClubAddForm() {
     else if (data.club_recruit_period === '모집 방식 선택') {
       return alert('동아리 모집 방식을 선택해주세요.');
     }
+    else if (!data.club_img.length) {
+      return alert('동아리 대표 포스터를 등록해주세요.');
+    }
     else if (data.club_recruit_period === '정기모집' && (
-      data.period_start === '연도-월-일' || data.period_end === '연도-월-일'
+      !data.period_start || !data.period_end
     )) {
       return alert('동아리 모집 기간을 선택해주세요.');
     }
 
-    const result = { ...data };
-    const clubImg = new FormData();
-    clubImg.append('club_img', data.club_img[0]);
-    result.club_img = clubImg;
-    console.log(result.club_img);
     try {
+      const form = new FormData();
+      form.append('club_img', data.club_img[0]);
+      console.log(form);
+      const res = await fetch('/api/clubs/add-img', {
+        method: 'POST',
+        // headers: { "Content-Type": "multipart/form-data" },
+        body: form
+      });
+      const json: { img_url: string; } = await res.json();
+      setValue('club_img_url', json.img_url);
+    } catch (err) {
+      console.error('이미지 업로드 실패', err);
+    }
+
+    try {
+      const body = {
+        club_name: data.club_name,
+        club_category: data.club_category,
+        club_description: data.club_description,
+        club_post: data.club_post,
+        club_recruit_period: data.club_recruit_period,
+        period_start: data.period_start,
+        period_end: data.period_end,
+        club_img_url: data.club_img_url
+      };
       const res = await fetch('/api/clubs/add', {
         method: 'POST',
         headers: { 'Content-Type': 'appliction/json' },
-        body: JSON.stringify(result)
+        body: JSON.stringify(body)
       });
     } catch (err) {
       console.error('개설 요청 실패', err);
@@ -139,7 +165,7 @@ export default function ClubAddForm() {
         <input
           className="px-3 py-2 rounded-md outline-none w-full border border-silver bg-white"
           type="file"
-          {...register('club_img', { required: true })}
+          {...register('club_img')}
           onChange={clubImgUploadHandler.onChange}
         />
       </section>
@@ -186,6 +212,7 @@ interface FormInputs {
   club_description: string;
   club_post: string;
   club_img: File;
+  club_img_url: string;
   club_recruit_period: string;
   period_start: string;
   period_end: string;

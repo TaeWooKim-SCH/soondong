@@ -29,11 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `insert into tb_member(id, student_id, password, name, phone_number, school_college, school_department)
       values('${body.id}', '${body.student_id}', '${body.password}', '${body.name}', '${body.phone_number}', '${body.school_college}', '${body.school_department}');`
     );
+    return res.status(200).json(body);
   } catch (err) {
     console.error(err);
     return res.status(500).send('내부 서버 오류');
   }
-  return res.status(200).json(body);
 }
 
 interface SignupFormData {
