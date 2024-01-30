@@ -6,6 +6,8 @@ import { getToken } from "next-auth/jwt";
 
 const secret = process.env.NEXT_AUTH_SECRET;
 
+
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
   if (req.method !== 'POST') {

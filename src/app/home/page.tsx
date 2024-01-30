@@ -14,6 +14,7 @@ async function getData() {
 
 export default async function Home() {
   const clubsData: ClubsData[] = await getData();
+  // const testView = clubsData[3].club_post.split('\n');
 
   return (
     <Layout>
@@ -33,6 +34,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
+      {/* <div>{testView.map((post, idx) => <p key={idx}>{post}</p>)}</div> */}
     </Layout>
   );
 }

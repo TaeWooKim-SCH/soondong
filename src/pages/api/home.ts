@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const connectDb = await db.promise().getConnection();
     const [ row ] = await connectDb.query<RowDataPacket[]>('SELECT * FROM tb_club');
-    console.log(row);
+
     const result = row.map((club) => {
       const result_club = {
         club_id: club.club_id,
