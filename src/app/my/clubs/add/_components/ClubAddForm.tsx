@@ -48,7 +48,6 @@ export default function ClubAddForm() {
 
   // 동아리 개설 신청 핸들러
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
-    console.log(data);
     // 필수 입력 요소 검사
     if (data.club_category === '카테고리 선택') {
       return alert('동아리 카테고리를 선택해주세요.');
@@ -65,20 +64,24 @@ export default function ClubAddForm() {
       return alert('동아리 모집 기간을 선택해주세요.');
     }
 
+    // S3에 동아리 포스터 업로드
     try {
       const form = new FormData();
       form.append('club_img', data.club_img[0]);
-      console.log(form);
+
       const res = await fetch('/api/clubs/add-img', {
         method: 'POST',
         // headers: { "Content-Type": "multipart/form-data" },
         body: form
       });
+
       const json: { img_url: string; } = await res.json();
       setValue('club_img_url', json.img_url);
     } catch (err) {
       console.error('이미지 업로드 실패', err);
     }
+
+    // 동아리 개설 신청
     if (watch('club_img_url')) {
       try {
         const body = {

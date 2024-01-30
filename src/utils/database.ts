@@ -1,9 +1,9 @@
 import mysql from 'mysql2';
-import type { Connection, Pool } from "mysql2";
+import type { Pool } from "mysql2";
 
 let db: Pool;
 
-const connectionInfo = {
+export const connectionInfo = {
   host: process.env.MYSQL_HOST,
   port: process.env.MYSQL_PORT,
   user: process.env.MYSQL_USER,

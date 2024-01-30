@@ -1,9 +1,21 @@
 import Layout from "../_components/layouts/Layout";
 import PostCard from "../_components/PostCard";
 import Title from "../_components/Title";
-import { clubsData } from "../_data/dummy";
 
-export default function Home() {
+async function getData() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/home`, { cache: 'no-store' });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json()
+}
+
+export default async function Home() {
+  const clubsData: ClubsData[] = await getData();
+  // const testView = clubsData[3].club_post.split('\n');
+
   return (
     <Layout>
       <section className="mb-10">
@@ -22,6 +34,18 @@ export default function Home() {
           ))}
         </div>
       </section>
+      {/* <div>{testView.map((post, idx) => <p key={idx}>{post}</p>)}</div> */}
     </Layout>
   );
+}
+
+interface ClubsData {
+  club_id: string;
+  club_name: string;
+  club_description: string;
+  club_post: string;
+  club_img_url: string;
+  club_recruit_period: string;
+  club_like_count: number;
+  club_category: string;
 }
