@@ -12,40 +12,50 @@ export default async function ClubDetail({ params }: PageProps) {
 
   return (
     <Layout className="flex flex-col items-center">
-      <section className="flex justify-between items-center border-b-2 border-silver pb-3 mb-5 sm:w-[500px]">
-        <article className="flex items-center text-2xl">
-          <div className="font-bold mr-3">{clubInfo.club_name}</div>
+      <section className="w-full flex justify-between items-end border-b-[1.5px] border-blue pb-1 mb-5 sm:pb-3 sm:w-[500px]">
+        <article className="flex items-end">
+          <div className="flex flex-col justify-start items-start">
+            <div
+              className="text-xs text-white rounded-full bg-blue inline-block px-2 pt-[2px] pb-[3px] mb-1"
+            >{clubInfo.club_category}</div>
+            <div className="font-bold text-xl sm:text-[1.7rem] mr-2">{clubInfo.club_name}</div>
+          </div>
           {clubInfo.club_recruit_period === '상시모집' ? (
-            <div className="font-bold text-blue">{clubInfo.club_recruit_period}</div>
+            <div className="font-bold text-base text-blue sm:text-lg">[{clubInfo.club_recruit_period}]</div>
           ) : (
             <div
-              className={`font-bold ${
+              className={`font-bold text-base sm:text-lg ${
                 remainPeriod > 0 ? 'text-blue' : 'text-silver'
               }`}
-            >{remainPeriod > 0 ? `D-${remainPeriod}` : '마감'}</div>
+            >{remainPeriod > 0 ? `[D-${remainPeriod}]` : '[마감]'}</div>
           )}
-          <div
-            className="text-xs text-white rounded-full bg-blue inline-block px-2 pt-[2px] pb-[3px] ml-3"
-          >{clubInfo.club_category}</div>
+          
         </article>
         <article className="flex items-center">
-          <div className="mr-3">
-            <IoMdHeartEmpty size="30" color="red" />
-          </div>
-          <button className="bg-blue px-4 py-1 rounded-md text-white text-base">신청하기</button>
+          {/* 버전 2에서 구현 */}
+          {/* <div className="mr-1 sm:mr-3">
+            <IoMdHeartEmpty size="30" color="#26539C" />
+          </div> */}
+          <button className="bg-blue px-3 py-1 rounded-md text-white text-sm sm:text-base sm:px-4">신청하기</button>
         </article>
       </section>
-      <section className="pb-5 mb-10 border-b-2 border-silver sm:w-[500px]">
+      <section className="w-full mb-5 sm:mb-10 sm:w-[500px]">
         <Image
-          className="w-[400px] rounded-md shadow-lg mx-auto"
+          className="w-[500px] rounded-md shadow-lg mx-auto"
           src={clubInfo.club_img_url}
           width={1000}
           height={0}
           alt="동아리 포스터"
         />
       </section>
-      <section className="text-lg bg-gray p-5 rounded-md sm:w-[500px]">
-        {clubPost.map((post, idx) => <p key={idx}>{post}</p>)}
+      <section className="w-full border-[1.5px] border-blue p-3 rounded-md text-sm sm:text-lg sm:w-[500px] sm:p-5">
+      {/* <section className="w-full bg-gray p-3 rounded-md sm:text-lg sm:w-[500px] sm:p-5"> */}
+        {clubPost.map((post, idx) => {
+          if (!post) {
+            return <br key={idx} />;
+          }
+          return <p className="break-words" key={idx}>{post}</p>;
+        })}
       </section>
     </Layout>
   );
