@@ -14,12 +14,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (Array.isArray(result[0])) {
       if (result[0].length) { // 아이디 중복 발생
+        connectDb.release();
         return res.status(409).send('아이디 중복 발생');
       } else { // 아이디 중복 없음
+        connectDb.release();
         return res.status(200).send('아이디 중복 없음');
       }
     }
-
     connectDb.release();
   } catch(err) {
     console.error(err);

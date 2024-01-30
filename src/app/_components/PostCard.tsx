@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { calculRemainDate } from "@/utils/modules";
+
 export default function PostCard({ clubInfo }: PropsType) {
-  const recruitPeriod = clubInfo.club_recruit_period.split('~');
-  const recruitEndDate = new Date(recruitPeriod[1]).getTime();
-  const todayDate = new Date().getTime();
-  const remainPeriod = Math.ceil((recruitEndDate - todayDate) / (1000 * 60 * 60 * 24));
+  const remainPeriod = calculRemainDate(clubInfo.club_recruit_period);
 
   return (
     <Link href={`/clubs/${clubInfo.club_id}`} className="shadow-xl rounded-md transition-all bg-white hover:scale-[1.03]">

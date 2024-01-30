@@ -20,3 +20,11 @@ export function decrypt(code: string, key: string) {
   const decrypted = cryptoJS.AES.decrypt(code, key);
   return decrypted.toString(cryptoJS.enc.Utf8);
 }
+
+export function calculRemainDate(period: string) {
+  const recruitPeriod = period.split('~');
+  const recruitEndDate = new Date(recruitPeriod[1]).getTime();
+  const todayDate = new Date().getTime();
+  const remainPeriod = Math.ceil((recruitEndDate - todayDate) / (1000 * 60 * 60 * 24));
+  return remainPeriod;
+}
