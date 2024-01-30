@@ -19,6 +19,7 @@ const config: Config = {
       "blue": "var(--main-blue-color)",
       "light-blue": "#6382B5",
       "white": "#FFFFFF",
+      "gray": "#D0D0D0",
       "black": "#000000",
       "light-black": "242424",
       "silver": "#8E9190",

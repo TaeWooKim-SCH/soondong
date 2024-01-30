@@ -12,7 +12,7 @@ export default async function ClubDetail({ params }: PageProps) {
 
   return (
     <Layout className="flex flex-col items-center">
-      <section className="flex justify-between items-center border-b-2 border-silver pb-3 mb-5 sm:w-[600px]">
+      <section className="flex justify-between items-center border-b-2 border-silver pb-3 mb-5 sm:w-[500px]">
         <article className="flex items-center text-2xl">
           <div className="font-bold mr-3">{clubInfo.club_name}</div>
           {clubInfo.club_recruit_period === '상시모집' ? (
@@ -35,7 +35,7 @@ export default async function ClubDetail({ params }: PageProps) {
           <button className="bg-blue px-4 py-1 rounded-md text-white text-base">신청하기</button>
         </article>
       </section>
-      <section className="pb-5 mb-10 border-b-2 border-silver sm:w-[600px]">
+      <section className="pb-5 mb-10 border-b-2 border-silver sm:w-[500px]">
         <Image
           className="w-[400px] rounded-md shadow-lg mx-auto"
           src={clubInfo.club_img_url}
@@ -44,7 +44,7 @@ export default async function ClubDetail({ params }: PageProps) {
           alt="동아리 포스터"
         />
       </section>
-      <section className="text-lg bg-silver p-5 rounded-md">
+      <section className="text-lg bg-gray p-5 rounded-md sm:w-[500px]">
         {clubPost.map((post, idx) => <p key={idx}>{post}</p>)}
       </section>
     </Layout>
