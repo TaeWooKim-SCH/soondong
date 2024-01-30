@@ -29,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `insert into tb_member(id, student_id, password, name, phone_number, school_college, school_department)
       values('${body.id}', '${body.student_id}', '${body.password}', '${body.name}', '${body.phone_number}', '${body.school_college}', '${body.school_department}');`
     );
+    connectDb.release();
     return res.status(200).json(body);
   } catch (err) {
     console.error(err);

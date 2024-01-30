@@ -19,15 +19,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const [ row ] = await connectDb.query<RowDataPacket[]>(`select * from tb_member where id = '${decryptedBodyId}'`);
 
     if (!row.length) {
+      connectDb.release();
       return res.status(404).send('유저 정보 없음');
     }
     else {
       const result = row[0];
       const decryptedResultPw = decrypt(result.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY);
       if (decryptedBodyPw === decryptedResultPw) {
+        connectDb.release();
         return res.status(200).json({ name: result.name, id: result.id });
       }
       else {
+        connectDb.release();
         return res.status(401).send('비밀번호 일치하지 않음');
       }
     }

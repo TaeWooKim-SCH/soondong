@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "@/utils/database";
 import { RowDataPacket } from "mysql2";
+
+import { db } from "@/utils/database";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -13,6 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const [ row ] = await connectDb.query<RowDataPacket[]>('SELECT * FROM tb_club');
 
     const result = row.map((club) => {
+      // TODO: delete 메서드로 수정
       const result_club = {
         club_id: club.club_id,
         club_name: club.club_name,
@@ -25,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
       return result_club;
     })
-
+    connectDb.release();
     return res.status(200).json(result);
   } catch (err) {
     console.error(err);

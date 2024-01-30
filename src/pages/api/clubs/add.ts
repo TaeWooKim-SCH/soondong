@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { db } from "@/utils/database";
-
-import { generateRandomString } from "@/utils/modules";
 import { getToken } from "next-auth/jwt";
 
+import { db } from "@/utils/database";
+import { generateRandomString } from "@/utils/modules";
+
 const secret = process.env.NEXT_AUTH_SECRET;
-
-
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
@@ -31,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         `insert into tb_club(club_id, club_admin_id, club_name, club_description, club_post, club_img_url, club_recruit_period, club_category)
         values('${club_id}', '${club_admin_id}', '${body.club_name}', '${body.club_description}', '${body.club_post}', '${body.club_img_url}', '${body.club_recruit_period}', '${body.club_category}');`
       );
+      connectDb.release();
       return res.status(201).json(body);
     } catch (err) {
       console.error(err);
