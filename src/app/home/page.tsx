@@ -1,10 +1,10 @@
 import Layout from "../_components/layouts/Layout";
 import PostCard from "../_components/PostCard";
 import Title from "../_components/Title";
-import { clubsData } from "../_data/dummy";
 
 async function getData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/home`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/home`, { cache: 'no-store' });
+
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
@@ -39,13 +39,11 @@ export default async function Home() {
 
 interface ClubsData {
   club_id: string;
-  club_admin_id: string;
   club_name: string;
   club_description: string;
   club_post: string;
   club_img_url: string;
   club_recruit_period: string;
   club_like_count: number;
-  club_join_state: string;
   club_category: string;
 }
