@@ -4,6 +4,9 @@ import { IoMdHeart } from "react-icons/io";
 
 import Layout from "@/app/_components/layouts/Layout";
 import { calculRemainDate } from "@/utils/modules";
+import ClubJoinBtn from "./_components/ClubJoinBtn";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function ClubDetail({ params }: PageProps) {
   const clubInfo: ClubsData = await getData(params.club_id);
@@ -36,7 +39,9 @@ export default async function ClubDetail({ params }: PageProps) {
           {/* <div className="mr-1 sm:mr-3">
             <IoMdHeartEmpty size="30" color="#26539C" />
           </div> */}
-          <button className="bg-blue px-3 py-1 rounded-md text-white text-sm sm:text-base sm:px-4">신청하기</button>
+          <Suspense fallback={<Loading />}>
+            <ClubJoinBtn />
+          </Suspense>
         </article>
       </section>
       <section className="w-full mb-5 sm:mb-10 sm:w-[500px]">
