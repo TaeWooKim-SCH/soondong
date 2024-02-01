@@ -1,11 +1,11 @@
 import Image from "next/image";
+import { Suspense } from "react";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 
 import Layout from "@/app/_components/layouts/Layout";
 import { calculRemainDate } from "@/utils/modules";
 import ClubJoinBtn from "./_components/ClubJoinBtn";
-import { Suspense } from "react";
 import Loading from "./loading";
 
 export default async function ClubDetail({ params }: PageProps) {
@@ -40,7 +40,7 @@ export default async function ClubDetail({ params }: PageProps) {
             <IoMdHeartEmpty size="30" color="#26539C" />
           </div> */}
           <Suspense fallback={<Loading />}>
-            <ClubJoinBtn />
+            <ClubJoinBtn clubId={clubInfo.club_id} />
           </Suspense>
         </article>
       </section>
@@ -54,7 +54,6 @@ export default async function ClubDetail({ params }: PageProps) {
         />
       </section>
       <section className="w-full border-[1.5px] border-blue p-3 rounded-md text-sm sm:text-lg sm:w-[500px] sm:p-5">
-      {/* <section className="w-full bg-gray p-3 rounded-md sm:text-lg sm:w-[500px] sm:p-5"> */}
         {clubPost.map((post, idx) => {
           if (!post) {
             return <br key={idx} />;
