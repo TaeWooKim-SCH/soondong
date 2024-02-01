@@ -17,7 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   switch (req.method) {
     case 'GET':
-      console.log('GET 요청 들어옴');
       try {
         const connectDb = await db.promise().getConnection();
         const [ row ] = await connectDb.query<RowDataPacket[]>(
@@ -31,7 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).send('내부 서버 오류');
       }
     case 'POST':
-      console.log('POST 요청 들어옴');
       try {
         const { club_id } = req.query;
         const join_id = generateRandomString();
@@ -46,6 +44,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         console.error(err);
         return res.status(500).send('내부 서버 오류');
       }
-      return res.status(200).json({});
   }
 }
