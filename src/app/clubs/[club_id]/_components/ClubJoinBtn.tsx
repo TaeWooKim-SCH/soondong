@@ -30,6 +30,7 @@ export default function ClubJoinBtn({ clubId }: PropsType) {
         }
         else {
           const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`, { method: 'POST' });
+          // TODO: 로그인 상태가 아니면 신청못함
           if (!res.ok) {
             return alert('가입 신청에 실패했습니다.');
           }
