@@ -11,6 +11,12 @@
 - AWS RDS
 - AWS S3
 
+# Contributor
+|![김태우](https://github.com/TaeWooKim-SCH.png)|
+|---|
+|[김태우](https://github.com/TaeWooKim-SCH)|
+|FE, BE|
+
 # DB Schema
 <img width="1038" alt="image" src="https://github.com/TaeWooKim-SCH/soondong/assets/79956107/f9d0a30f-2a7d-4e75-b978-ad0cea672700">
 
