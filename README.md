@@ -11,6 +11,9 @@
 - AWS RDS
 - AWS S3
 
+# DB Schema
+<img width="1038" alt="image" src="https://github.com/TaeWooKim-SCH/soondong/assets/79956107/f9d0a30f-2a7d-4e75-b978-ad0cea672700">
+
 # 사이트 이미지
 ![image](https://github.com/TaeWooKim-SCH/soondong/assets/79956107/072633b3-27f1-48bb-91c7-1fe4fbe22ddc)
 ![image](https://github.com/TaeWooKim-SCH/soondong/assets/79956107/76f61136-5b3d-4ecc-a5da-07c3c83ec8b5)
