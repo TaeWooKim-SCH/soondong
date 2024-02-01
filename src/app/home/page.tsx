@@ -25,14 +25,15 @@ export default async function Home() {
           ))}
         </div>
       </section>
-      <section className="mb-10">
+      {/* TODO: 좋아요 기능 구현 후 구현 */}
+      {/* <section className="mb-10">
         <Title className="mb-5">인기 동아리</Title>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {clubsData.map((clubInfo) => (
             <PostCard key={clubInfo.club_id} clubInfo={clubInfo} />
           ))}
         </div>
-      </section>
+      </section> */}
     </Layout>
   );
 }
