@@ -1,6 +1,10 @@
 import Title from "@/app/_components/Title";
 import Layout from "@/app/_components/layouts/Layout";
 
+async function getData() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/joins`);
+}
+
 export default function MyJoins() {
   return (
     <Layout className="flex flex-col items-center">
