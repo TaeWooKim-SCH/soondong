@@ -1,8 +1,9 @@
 import Title from "@/app/_components/Title";
+import Toggle from "@/app/_components/Toggle";
 import Layout from "@/app/_components/layouts/Layout";
 
 async function getData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/joins`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/joins`);
 }
 
 export default function MyJoins() {
@@ -10,7 +11,10 @@ export default function MyJoins() {
     <Layout className="flex flex-col items-center">
       <section className="w-full mb-10 sm:w-[500px]">
         <Title>동아리 신청 목록</Title>
-        <div className="text-end text-sm sm:text-base">가입된 동아리만 보기</div>
+        <div className="flex justify-end items-center">
+          <div className="mr-3 text-end text-sm sm:text-base">가입된 동아리만 보기</div>
+          <Toggle />
+        </div>
       </section>
       <section className="w-full grid grid-cols-1 sm:w-[500px]">
         <article className="border-2 border-silver rounded-md p-5">
