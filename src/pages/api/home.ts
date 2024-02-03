@@ -12,7 +12,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const connectDb = await db.promise().getConnection();
     const [ row ] = await connectDb.query<RowDataPacket[]>('SELECT * FROM tb_club');
-
     const result = row.map((club) => {
       // TODO: delete 메서드로 수정
       const result_club = {

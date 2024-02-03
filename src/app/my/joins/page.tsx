@@ -1,12 +1,20 @@
+import Layout from "@/app/_components/layouts/Layout";
 import Title from "@/app/_components/Title";
 import Toggle from "@/app/_components/Toggle";
-import Layout from "@/app/_components/layouts/Layout";
 
 async function getData() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/joins`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/joins`, { cache: 'no-store' });
+
+  // if (!res.ok) {
+  //   throw new Error('Failed to fetch data');
+  // }
+  
+  return res.json();
 }
 
-export default function MyJoins() {
+export default async function MyJoins() {
+  const joinsData = await getData();
+  console.log(joinsData);
   return (
     <Layout className="flex flex-col items-center">
       <section className="w-full mb-10 sm:w-[500px]">
