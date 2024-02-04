@@ -1,21 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getToken } from "next-auth/jwt";
 import { RowDataPacket } from "mysql2";
 
 import { db } from "@/utils/database";
 
-const secret = process.env.NEXT_AUTH_SECRET;
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: MyRequest, res: NextApiResponse) {
   // Method Not Allowed
   if (req.method !== 'GET') {
     return res.status(405).send('잘못된 요청 메서드');
   }
-  console.log('요청 들어옴');
-  console.log(req.cookies);
-  const token = await getToken({ req, secret });
-  console.log(token);
-  if (!token) {
+  
+  const user_id = req.query.user;
+
+  if (!user_id) {
     return res.status(401).send('접근 권한 없음');
   }
 
@@ -25,13 +22,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `select tb_club_members.club_id, club_name, club_description, club_join_state from tb_club_members
         inner join tb_club
         on tb_club_members.club_id = tb_club.club_id
-      where tb_club_members.user_id = '${token.id}';`
+      where tb_club_members.user_id = '${user_id}';`
     );
-    console.log(row);
+    return res.status(201).json(row);
   } catch (err) {
     console.error('데이터베이스 오류', err);
     res.status(500).send('내부 서버 오류');
   }
+}
 
-  return res.status(201).send('동아리 신청 내역');
+interface MyRequest extends NextApiRequest {
+  query: {
+    user: string;
+  }
 }
