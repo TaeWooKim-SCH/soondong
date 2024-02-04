@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import IsLoginHeader from "./IsLoginHeader";
 
-export default async  function LoginSection() {
+export default async function LoginSection() {
   const session = await getServerSession(authOptions);
 
   if (session) {
