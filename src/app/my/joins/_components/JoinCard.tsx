@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function JoinCard({ joinData }: PropsType) {
   return (
-    <article className="border-2 border-silver rounded-md p-5">
+    <article className="border-b-2 border-silver p-5">
       <section className="flex justify-between items-center mb-3">
         <Link
           className="text-lg font-bold sm:text-xl"

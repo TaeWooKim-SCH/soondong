@@ -29,7 +29,7 @@ export default async function MyJoins() {
           <Toggle />
         </div>
       </section>
-      <section className="w-full grid grid-cols-1 gap-5 sm:w-[500px]">
+      <section className="w-full grid grid-cols-1 sm:w-[500px]">
         {joinsData.map((join) => (
           <JoinCard joinData={join} key={join.club_id} />
         ))}
