@@ -19,7 +19,7 @@ async function getData(userId: string) {
 export default async function MyJoins() {
   const session = await getServerSession(authOptions);
   const joinsData: JoinData[] = await getData(session?.user.id);
-  console.log(joinsData[0]);
+  
   return (
     <Layout className="flex flex-col items-center">
       <section className="w-full mb-10 sm:w-[500px]">
@@ -42,5 +42,5 @@ interface JoinData {
   club_id: string;
   club_name: string;
   club_description: string;
-  club_join_state: string;
+  join_state: 'pending' | 'accept' | 'reject'; // accept, pending, reject 중 하나
 }

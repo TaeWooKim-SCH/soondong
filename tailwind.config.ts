@@ -18,6 +18,7 @@ const config: Config = {
       "bg-color": "var(--bg-white)",
       "blue": "var(--main-blue-color)",
       "light-blue": "#6382B5",
+      "red": "#FF2C2C",
       "white": "#FFFFFF",
       "gray": "#D0D0D0",
       "black": "#000000",
