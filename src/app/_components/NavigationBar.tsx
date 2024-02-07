@@ -18,16 +18,16 @@ export default function NavigationBar() {
   return (
     <section className="xl:hidden">
       <div
-        className="ml-2 relative w-[30px] h-[30px] flex flex-col justify-evenly cursor-pointer z-50 sm:ml-5"
+        className="ml-2 relative w-[25px] h-[25px] flex flex-col justify-evenly cursor-pointer z-50 sm:w-[30px] sm:h-[30px]"
         onClick={NavigationBarHandler}
       >
         <div
-          className={`absolute transition-all w-[30px] h-[4px] bg-blue rounded-md ${
+          className={`absolute transition-all w-[25px] h-[3px] bg-blue rounded-md sm:w-[30px] sm:h-[4px] ${
             isNavigationBar ? 'top-1/2 -translate-y-1/2 rotate-45 bg-white' : 'top-2'
           }`}
         ></div>
         <div
-          className={`absolute transition-all w-[30px] h-[4px] bg-blue rounded-md ${
+          className={`absolute transition-all w-[25px] h-[3px] bg-blue rounded-md sm:w-[30px] sm:h-[4px] ${
             isNavigationBar ? 'top-1/2 -translate-y-1/2 -rotate-45 bg-white' : 'top-4'
           }`}
         ></div>
