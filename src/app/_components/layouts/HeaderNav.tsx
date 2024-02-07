@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import SideBar from "../Sidebar";
+
 import LoginSection from "../header/LoginSection";
+import NavigationBar from "../NavigationBar";
 
 export default function HeaderNav() {
   const headerItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
@@ -25,7 +26,7 @@ export default function HeaderNav() {
           ))}
         </div>
         <LoginSection />
-        <SideBar />
+        <NavigationBar />
       </section>
     </header>
   );
