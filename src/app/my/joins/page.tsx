@@ -17,9 +17,11 @@ async function getData(userId: string) {
 }
 
 export default async function MyJoins() {
+  // TODO: 가입된 동아리만 보여주기 구현
+  // 서버에서 getToken 함수가 먹히지 않아 세션을 클라이언트에서 받고 서버로 넘겨줌
   const session = await getServerSession(authOptions);
   const joinsData: JoinData[] = await getData(session?.user.id);
-  console.log(joinsData[0]);
+  
   return (
     <Layout className="flex flex-col items-center">
       <section className="w-full mb-10 sm:w-[500px]">
@@ -29,7 +31,7 @@ export default async function MyJoins() {
           <Toggle />
         </div>
       </section>
-      <section className="w-full grid grid-cols-1 gap-5 sm:w-[500px]">
+      <section className="w-full grid grid-cols-1 sm:w-[500px]">
         {joinsData.map((join) => (
           <JoinCard joinData={join} key={join.club_id} />
         ))}
@@ -42,5 +44,5 @@ interface JoinData {
   club_id: string;
   club_name: string;
   club_description: string;
-  club_join_state: string;
+  join_state: 'pending' | 'accept' | 'reject'; // accept, pending, reject 중 하나
 }
