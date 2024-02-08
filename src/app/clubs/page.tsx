@@ -1,7 +1,7 @@
-import PostCard from "../_components/PostCard";
+import Layout from "../_components/layouts/Layout";
 import Title from "../_components/Title";
 import Toggle from "../_components/Toggle";
-import Layout from "../_components/layouts/Layout";
+import PostCard from "../_components/PostCard";
 
 async function getData(category: string | undefined) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs${
@@ -22,7 +22,7 @@ export default async function Clubs({ searchParams }: PageProps) {
     <Layout>
       <section className="mb-10">
         <Title>모든 동아리 ({clubsData.length})</Title>
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center mt-5">
           <div className="mr-3">모집 중인 동아리만 보기</div>
           <Toggle />
         </div>
