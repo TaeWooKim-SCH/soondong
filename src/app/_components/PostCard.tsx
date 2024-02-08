@@ -43,10 +43,8 @@ interface PropsType {
     club_id: string;
     club_name: string;
     club_description: string;
-    club_post: string;
     club_img_url: string;
     club_recruit_period: string;
-    club_like_count: number;
     club_category: string;
   }
 }
