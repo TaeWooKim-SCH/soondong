@@ -24,9 +24,9 @@ export default async function MyJoins() {
   
   return (
     <Layout className="flex flex-col items-center">
-      <section className="w-full mb-10 sm:w-[500px]">
+      <section className="w-full mb-5 sm:w-[500px]">
         <Title>동아리 신청 목록</Title>
-        <div className="flex justify-end items-center">
+        <div className="flex justify-end items-center mt-3">
           <div className="mr-3 text-end text-sm sm:text-base">가입된 동아리만 보기</div>
           <Toggle />
         </div>
