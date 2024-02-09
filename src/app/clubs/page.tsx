@@ -27,11 +27,17 @@ export default async function Clubs({ searchParams }: PageProps) {
           <Toggle />
         </div>
       </section>
-      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-10">
-        {clubsData.map((clubInfo) => (
-          <PostCard key={clubInfo.club_id} clubInfo={clubInfo} />
-        ))}
-      </section>
+      {!clubsData.length ? (
+        <section className="flex justify-center items-center mt-44">
+          <Title>아직 없어요! 동아리를 창설해보세요!</Title>
+        </section>
+      ) : (
+        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-10">
+          {clubsData.map((clubInfo) => (
+            <PostCard key={clubInfo.club_id} clubInfo={clubInfo} />
+          ))}
+        </section>
+      )}
     </Layout>
   );
 }

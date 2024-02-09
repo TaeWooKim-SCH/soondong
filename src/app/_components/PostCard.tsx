@@ -7,7 +7,7 @@ export default function PostCard({ clubInfo }: PropsType) {
   const remainPeriod = calculRemainDate(clubInfo.club_recruit_period);
 
   return (
-    <Link href={`/clubs/${clubInfo.club_id}`} className="shadow-xl rounded-md transition-all bg-white hover:scale-[1.03]">
+    <Link href={`/clubs/${clubInfo.club_id}`} className="min-w-[240px] shadow-xl rounded-md transition-all bg-white hover:scale-[1.03]">
       <Image
         className="w-full h-[400px] rounded-t-md object-cover"
         src={clubInfo.club_img_url}
