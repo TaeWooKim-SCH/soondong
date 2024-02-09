@@ -24,3 +24,7 @@ export default function Toggle() {
     </div>
   );
 }
+
+interface PropsType {
+  toggleName: string;
+}
