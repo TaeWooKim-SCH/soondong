@@ -1,7 +1,7 @@
 import Layout from "../_components/layouts/Layout";
 import Title from "../_components/Title";
 import Toggle from "../_components/Toggle";
-import PostCard from "../_components/PostCard";
+import ClubsSection from "./_components/ClubsSection";
 
 async function getData(category: string | undefined) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs${
@@ -16,7 +16,7 @@ async function getData(category: string | undefined) {
 }
 
 export default async function Clubs({ searchParams }: PageProps) {
-  const clubsData: ClubsType[] = await getData(searchParams?.category);
+  const clubsData: ClubType[] = await getData(searchParams?.category);
 
   return (
     <Layout>
@@ -24,14 +24,10 @@ export default async function Clubs({ searchParams }: PageProps) {
         <Title>모든 동아리 ({clubsData.length})</Title>
         <div className="flex justify-end items-center mt-3">
           <div className="mr-3 text-sm sm:text-base">모집 중인 동아리만 보기</div>
-          <Toggle />
+          <Toggle toggleName="recruiting" />
         </div>
       </section>
-      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-10">
-        {clubsData.map((clubInfo) => (
-          <PostCard key={clubInfo.club_id} clubInfo={clubInfo} />
-        ))}
-      </section>
+      <ClubsSection clubsData={clubsData} />
     </Layout>
   );
 }
@@ -42,7 +38,7 @@ interface PageProps {
   };
 }
 
-interface ClubsType {
+interface ClubType {
   club_id: string;
   club_name: string;
   club_description: string;
