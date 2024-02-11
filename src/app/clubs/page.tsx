@@ -21,7 +21,7 @@ export default async function Clubs({ searchParams }: PageProps) {
   return (
     <Layout>
       <section className="mb-5">
-        <Title>모든 동아리 ({clubsData.length})</Title>
+        <Title>{searchParams?.category} ({clubsData.length})</Title>
         <div className="flex justify-end items-center mt-3">
           <div className="mr-3 text-sm sm:text-base">모집 중인 동아리만 보기</div>
           <Toggle toggleName="recruiting" />
