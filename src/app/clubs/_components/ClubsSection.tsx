@@ -13,7 +13,7 @@ export default function ClubsSection({ clubsData }: PropsType) {
   //TODO: 데이터 필터링 -> 에러 수정하기
   useEffect(() => {
     if (recruiting) {
-      const result = [...clubs].filter((club) => {
+      const result = clubsData.filter((club) => {
         const remainPeriod = calculRemainDate(club.club_recruit_period);
         if (remainPeriod > 0 || club.club_recruit_period === '상시모집') {
           return club;
@@ -27,7 +27,7 @@ export default function ClubsSection({ clubsData }: PropsType) {
     else {
       setClubs(clubsData);
     }
-  }, [recruiting])
+  }, [clubsData, recruiting])
 
   return (
     <>
