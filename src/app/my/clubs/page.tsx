@@ -1,8 +1,15 @@
 import Title from "@/app/_components/Title";
 import Layout from "@/app/_components/layouts/Layout";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 
-export default function MyClubs() {
+export default async function MyClubs() {
+  // 서버에서 getToken 함수가 먹히지 않아 세션을 클라이언트에서 받고 서버로 넘겨줌
+  const session = await getServerSession(authOptions);
+  const myClubs = await getData(session?.user.id);
+  console.log(myClubs);
+
   return (
     <Layout className="lg:px-96 xl:px-[500px]">
       <section className="flex justify-between">
@@ -19,4 +26,14 @@ export default function MyClubs() {
       </section>
     </Layout>
   );
+}
+
+async function getData(userId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs?user=${userId}`, { cache: 'no-store' });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  
+  return res.json();
 }
