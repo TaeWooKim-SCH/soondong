@@ -17,7 +17,6 @@ async function getData(userId: string) {
 }
 
 export default async function MyJoins() {
-  // TODO: 가입된 동아리만 보여주기 구현
   // 서버에서 getToken 함수가 먹히지 않아 세션을 클라이언트에서 받고 서버로 넘겨줌
   const session = await getServerSession(authOptions);
   const joinsData: JoinData[] = await getData(session?.user.id);

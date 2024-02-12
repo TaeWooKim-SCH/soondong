@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useToggle } from "@/app/_modules/store";
+import Title from "@/app/_components/Title";
 import JoinCard from "./JoinCard";
 
 export default function JoinsContainer({ joinsData }: PropsType) {
@@ -25,11 +26,19 @@ export default function JoinsContainer({ joinsData }: PropsType) {
   }, [joinsData, joined])
 
   return (
-    <section className="w-full grid grid-cols-1 sm:w-[500px]">
-      {joins.map((join) => (
-        <JoinCard joinData={join} key={join.club_id} />
-      ))}
-    </section>
+    <>
+      {!joinsData.length ? (
+        <section className="flex justify-center items-center mt-44">
+          <Title>신청 내역이 없어요! 동아리에 가입해보세요!</Title>
+        </section>
+      ) : (
+        <section className="w-full grid grid-cols-1 sm:w-[500px]">
+          {joins.map((join) => (
+            <JoinCard joinData={join} key={join.club_id} />
+          ))}
+        </section>
+      )}
+    </>
   );
 }
 
