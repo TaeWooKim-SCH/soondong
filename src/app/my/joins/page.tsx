@@ -3,8 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import Layout from "@/app/_components/layouts/Layout";
 import Title from "@/app/_components/Title";
-import JoinCard from "./_components/JoinCard";
 import ToggleContainer from "@/app/_components/ToggleContainer";
+import JoinsContainer from "./_components/JoinsContainer";
 
 async function getData(userId: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/joins?user=${userId}`, { cache: 'no-store' });
@@ -31,11 +31,7 @@ export default async function MyJoins() {
           <ToggleContainer toggleName="joined" />
         </div>
       </section>
-      <section className="w-full grid grid-cols-1 sm:w-[500px]">
-        {joinsData.map((join) => (
-          <JoinCard joinData={join} key={join.club_id} />
-        ))}
-      </section>
+      <JoinsContainer joinsData={joinsData} />
     </Layout>
   );
 }
