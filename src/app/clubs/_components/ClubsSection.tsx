@@ -1,33 +1,31 @@
 'use client'
 
-import PostCard from "@/app/_components/PostCard";
-import Title from "@/app/_components/Title";
-import { useToggle } from "@/app/_modules/store";
-import { calculRemainDate } from "@/utils/modules";
 import { useEffect, useState } from "react";
 
-export default function ClubsSection({ clubsData }: PropsType) {
-  const [clubs, setClubs] = useState(clubsData);
-  const { recruiting } = useToggle();
+import { useToggle } from "@/app/_modules/store";
+import { calculRemainDate } from "@/utils/modules";
+import Title from "@/app/_components/Title";
+import PostCard from "@/app/_components/PostCard";
 
-  //TODO: 데이터 필터링 -> 에러 수정하기
+export default function ClubsSection({ clubsData }: PropsType) {
+  const [clubs, setClubs] = useState<ClubType[]>(clubsData);
+  const { recruiting } = useToggle();
+  
   useEffect(() => {
     if (recruiting) {
       const result = clubsData.filter((club) => {
         const remainPeriod = calculRemainDate(club.club_recruit_period);
         if (remainPeriod > 0 || club.club_recruit_period === '상시모집') {
           return club;
-        }
-        else {
+        } else {
           return;
         }
       });
       setClubs(result);
-    }
-    else {
+    } else {
       setClubs(clubsData);
     }
-  }, [clubsData, recruiting])
+  }, [clubsData, recruiting]);
 
   return (
     <>
