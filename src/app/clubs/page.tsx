@@ -1,6 +1,6 @@
 import Layout from "../_components/layouts/Layout";
 import Title from "../_components/Title";
-import Toggle from "../_components/Toggle";
+import ToggleContainer from "../_components/ToggleContainer";
 import ClubsSection from "./_components/ClubsSection";
 
 async function getData(category: string | undefined) {
@@ -24,7 +24,7 @@ export default async function Clubs({ searchParams }: PageProps) {
         <Title>{searchParams?.category} ({clubsData.length})</Title>
         <div className="flex justify-end items-center mt-3">
           <div className="mr-3 text-sm sm:text-base">모집 중인 동아리만 보기</div>
-          <Toggle toggleName="recruiting" />
+          <ToggleContainer toggleName="recruiting" />
         </div>
       </section>
       <ClubsSection clubsData={clubsData} />
