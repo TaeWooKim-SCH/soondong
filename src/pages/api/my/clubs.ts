@@ -2,9 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { RowDataPacket } from "mysql2";
 
 import { db } from "@/utils/database";
-import { getToken } from "next-auth/jwt";
-
-const secret = process.env.NEXT_AUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Method Not Allowed
