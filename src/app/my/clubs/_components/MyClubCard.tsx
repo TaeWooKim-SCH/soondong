@@ -7,7 +7,7 @@ export default function MyClubCard({ myClubInfo }: PropsType) {
   const remainPeriod = calculRemainDate(myClubInfo.club_recruit_period);
 
   return (
-    <article className="flex w-[300px] border-[1.5px] border-silver rounded-md p-3 sm:w-[600px] sm:p-5">
+    <article className="flex w-full border-[1.5px] border-silver rounded-md p-3 sm:w-[600px] sm:p-5">
         <Image
           className="w-[80px] h-[120px] rounded-md shadow-lg object-cover mr-3 sm:mr-5 sm:w-[160px] sm:h-[240px]"
           src={myClubInfo.club_img_url}
@@ -41,11 +41,11 @@ export default function MyClubCard({ myClubInfo }: PropsType) {
         </div>
         <div className="flex justify-end">
           <Link
-            className="text-xs py-1 px-4 border border-blue rounded-md mr-2 sm:text-sm sm:py-2 sm:px-7 sm:mr-5"
+            className="text-xs py-1 px-3 border border-blue rounded-md mr-2 sm:text-sm sm:py-2 sm:px-7 sm:mr-5"
             href={`/my/clubs/${myClubInfo.club_id}/fix`}
           >정보수정</Link>
           <Link
-            className="text-xs py-1 px-4 border border-blue rounded-md sm:text-sm sm:py-2 sm:px-7"
+            className="text-xs py-1 px-3 border border-blue rounded-md sm:text-sm sm:py-2 sm:px-7"
             href={`/my/clubs/${myClubInfo.club_id}/members`}
           >구성원 관리</Link>
         </div>

@@ -12,8 +12,8 @@ export default async function MyClubs() {
   const myClubs: MyClubInfo[] = await getData(session?.user.id);
 
   return (
-    <Layout className="lg:px-[250px] xl:px-[400px]">
-      <section className="flex justify-between mb-10">
+    <Layout>
+      <section className="max-w-[600px] mx-auto flex justify-between mb-10">
         <Title>내 동아리 관리</Title>
         <div>
           <Link
