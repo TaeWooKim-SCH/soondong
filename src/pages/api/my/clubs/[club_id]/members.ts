@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(403).send('잘못된 접근');
         } else {
           const members = await connectDb.query<RowDataPacket[]>(`
-            SELECT name, student_id, school_college, school_department, phone_number
+            SELECT name, student_id, school_college, school_department, phone_number, member_position, join_state
             FROM tb_club_members
               INNER JOIN tb_member
               ON tb_club_members.user_id = tb_member.id

@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
-  const members = await getData(params.club_id, session?.user.id);
+  const members:MemberType[] = await getData(params.club_id, session?.user.id);
   console.log(members);
 
   return (
@@ -13,7 +13,28 @@ export default async function MyClubMembers({ params }: PageProps) {
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>
       <section>
-
+        <ul className="text-center">
+          <li className="grid grid-cols-7 text-xs sm:text-base">
+            <div>이름</div>
+            <div>학번</div>
+            <div>단과대</div>
+            <div>학과</div>
+            <div>전화번호</div>
+            <div>직위</div>
+            <div>가입상태</div>
+          </li>
+          {members.map((memberInfo) => (
+            <li className="grid grid-cols-7 text-xs sm:text-base" key={memberInfo.student_id}>
+              <div>{memberInfo.name}</div>
+              <div>{memberInfo.student_id}</div>
+              <div>{memberInfo.school_college}</div>
+              <div>{memberInfo.school_department}</div>
+              <div>{memberInfo.phone_number}</div>
+              <div>{memberInfo.member_position}</div>
+              <div>{memberInfo.join_state}</div>
+            </li>
+          ))}
+        </ul>
       </section>
     </Layout>
   );
@@ -33,4 +54,14 @@ interface PageProps {
   params: {
     club_id: string;
   }
+}
+
+interface MemberType {
+  name: string;
+  student_id: string;
+  school_college: string;
+  school_department: string;
+  phone_number: string;
+  member_position: string;
+  join_state: string;
 }
