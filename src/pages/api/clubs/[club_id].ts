@@ -5,6 +5,7 @@ import { db } from "@/utils/database";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { club_id } = req.query;
+  
   switch (req.method) {
     case 'GET':
       if (club_id) {

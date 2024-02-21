@@ -74,7 +74,7 @@ export default function ClubFixForm({ clubInfo }: PropsType) {
       
       if (res.ok) {
         alert('동아리 정보가 수정되었습니다.');
-        return router.push('/my/clubs');
+        return router.push(`/clubs/${clubInfo.club_id}`);
       } else {
         return alert('동아리 정보 수정에 실패했습니다.');
       }
