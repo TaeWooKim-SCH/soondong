@@ -22,7 +22,7 @@ export default async function handler(req: MyRequest, res: NextApiResponse) {
         on tb_club_members.club_id = tb_club.club_id
       where tb_club_members.user_id = '${user_id}';`
     );
-    return res.status(201).json(row);
+    return res.status(200).json(row);
   } catch (err) {
     console.error('데이터베이스 오류', err);
     res.status(500).send('내부 서버 오류');
