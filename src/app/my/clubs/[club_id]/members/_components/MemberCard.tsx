@@ -5,6 +5,7 @@ export default function MemberCard({ memberInfo }: PropsType) {
       <section>학번: { memberInfo.student_id }</section>
       <section>단과대: { memberInfo.school_college }</section>
       <section>학과: { memberInfo.school_department }</section>
+      <section>전화번호: { memberInfo.phone_number }</section>
       <section>직위: { memberInfo.member_position }</section>
       {memberInfo.join_state === 'pending' ? (
         <section className="flex items-center">
