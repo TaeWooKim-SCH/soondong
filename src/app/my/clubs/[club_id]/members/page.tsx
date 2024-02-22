@@ -6,15 +6,14 @@ import MemberCard from "./_components/MemberCard";
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
   const members:MemberType[] = await getData(params.club_id, session?.user.id);
-  console.log(members);
-
+  
   return (
     <Layout className="flex flex-col items-center">
       <section className="flex flex-col items-center mb-5 sm:mb-10">
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>
       <section>
-        <ul className="text-center grid grid-cols-1 text-xs overflow-x-auto sm:text-sm">
+        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {members.map((memberInfo) => (
             <MemberCard key={memberInfo.student_id} memberInfo={memberInfo} />
           ))}
