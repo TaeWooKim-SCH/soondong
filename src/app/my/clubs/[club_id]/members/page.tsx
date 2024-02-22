@@ -1,6 +1,7 @@
 import Layout from "@/app/_components/layouts/Layout";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
+import MemberCard from "./_components/MemberCard";
 
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
@@ -13,26 +14,9 @@ export default async function MyClubMembers({ params }: PageProps) {
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>
       <section>
-        <ul className="text-center">
-          <li className="grid grid-cols-7 text-xs sm:text-base">
-            <div>이름</div>
-            <div>학번</div>
-            <div>단과대</div>
-            <div>학과</div>
-            <div>전화번호</div>
-            <div>직위</div>
-            <div>가입상태</div>
-          </li>
+        <ul className="text-center grid grid-cols-1 text-xs overflow-x-auto sm:text-sm">
           {members.map((memberInfo) => (
-            <li className="grid grid-cols-7 text-xs sm:text-base" key={memberInfo.student_id}>
-              <div>{memberInfo.name}</div>
-              <div>{memberInfo.student_id}</div>
-              <div>{memberInfo.school_college}</div>
-              <div>{memberInfo.school_department}</div>
-              <div>{memberInfo.phone_number}</div>
-              <div>{memberInfo.member_position}</div>
-              <div>{memberInfo.join_state}</div>
-            </li>
+            <MemberCard key={memberInfo.student_id} memberInfo={memberInfo} />
           ))}
         </ul>
       </section>
