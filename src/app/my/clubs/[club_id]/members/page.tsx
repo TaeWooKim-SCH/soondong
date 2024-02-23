@@ -2,10 +2,20 @@ import Layout from "@/app/_components/layouts/Layout";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import MemberCard from "./_components/MemberCard";
+import { encrypt } from "@/utils/modules";
 
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
   const members:MemberType[] = await getData(params.club_id, session?.user.id);
+
+  // 대기중인 사용자 먼저 보여주기
+  members.sort((a, b) => {
+    if (a.join_state === 'pending' && b.join_state !== 'pending') {
+      return -1;
+    } else {
+      return 1;
+    }
+  })
   
   return (
     <Layout className="flex flex-col items-center">
@@ -15,7 +25,12 @@ export default async function MyClubMembers({ params }: PageProps) {
       <section>
         <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {members.map((memberInfo) => (
-            <MemberCard key={memberInfo.student_id} memberInfo={memberInfo} />
+            <MemberCard
+              adminId={session?.user.id}
+              clubId={params.club_id}
+              memberInfo={memberInfo}
+              key={memberInfo.student_id}
+            />
           ))}
         </ul>
       </section>
@@ -23,8 +38,12 @@ export default async function MyClubMembers({ params }: PageProps) {
   );
 }
 
-async function getData(club_id: string, user_id: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/${club_id}/members?user=${user_id}`, { cache: 'no-store' });
+async function getData(club_id: string, admin_id: string) {
+  const encryptedAdminId = encrypt(admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/${club_id}/members?user=${encodeURIComponent(encryptedAdminId)}`,
+    { cache: 'no-store' }
+  );
 
   if (!res.ok) {
     throw new Error('Failed to fetch data');
@@ -40,6 +59,7 @@ interface PageProps {
 }
 
 interface MemberType {
+  join_id: string;
   name: string;
   student_id: string;
   school_college: string;

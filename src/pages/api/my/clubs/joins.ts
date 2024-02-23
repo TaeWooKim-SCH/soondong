@@ -22,6 +22,7 @@ export default async function handler(req: MyRequest, res: NextApiResponse) {
         on tb_club_members.club_id = tb_club.club_id
       where tb_club_members.user_id = '${user_id}';`
     );
+    connectDb.release();
     return res.status(200).json(row);
   } catch (err) {
     console.error('데이터베이스 오류', err);
