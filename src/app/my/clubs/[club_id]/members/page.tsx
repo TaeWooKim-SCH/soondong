@@ -17,6 +17,7 @@ export default async function MyClubMembers({ params }: PageProps) {
         <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {members.map((memberInfo) => (
             <MemberCard
+              adminId={session?.user.id}
               clubId={params.club_id}
               memberInfo={memberInfo}
               key={memberInfo.student_id}
@@ -28,10 +29,10 @@ export default async function MyClubMembers({ params }: PageProps) {
   );
 }
 
-async function getData(club_id: string, user_id: string) {
-  const encryptedUser = encrypt(user_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
+async function getData(club_id: string, admin_id: string) {
+  const encryptedAdminId = encrypt(admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/${club_id}/members?user=${encodeURIComponent(encryptedUser)}`,
+    `${process.env.NEXT_PUBLIC_DOMAIN}/api/my/clubs/${club_id}/members?user=${encodeURIComponent(encryptedAdminId)}`,
     { cache: 'no-store' }
   );
 
@@ -49,6 +50,7 @@ interface PageProps {
 }
 
 interface MemberType {
+  join_id: string;
   name: string;
   student_id: string;
   school_college: string;

@@ -1,8 +1,29 @@
+'use client'
 
+import { encrypt } from "@/utils/modules";
 
-export default function MemberCard({ clubId, memberInfo }: PropsType) {
-  const joinStateHandler = async (studentId: string, state: 'accept' | 'reject') => {
-    const res = await fetch(`/api/my/clubs/${clubId}/members?user`)
+export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
+  const joinStateHandler = async (admin_id: string, club_id: string, join_id: string, state: 'accept' | 'reject') => {
+    const encryptedAdminId = encrypt(admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
+    try {
+      const res = await fetch(`/api/my/clubs/${club_id}/members?user=${encodeURIComponent(encryptedAdminId)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          join_id: join_id,
+          state: state
+        })
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to UPDATE');
+      } else {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+      return alert('가입상태 변경에 실패했습니다. 다시 시도해주세요.');
+    }
   }
 
   return (
@@ -19,22 +40,28 @@ export default function MemberCard({ clubId, memberInfo }: PropsType) {
           <div className="ml-2">
             <button
               className="text-xs border-[1.5px] border-blue rounded-md px-3 py-1 mr-1"
+              onClick={() => joinStateHandler(adminId, clubId, memberInfo.join_id, 'accept')}
             >승인</button>
             <button
               className="text-xs border-[1.5px] border-red rounded-md px-3 py-1"
+              onClick={() => joinStateHandler(adminId, clubId, memberInfo.join_id, 'reject')}
             >거부</button>
           </div>
         </section>
-      ) : (
-        <section>가입상태: { memberInfo.join_state }</section>
-      )}
+      ) : (memberInfo.join_state === 'accept' ? (
+        <section>가입상태: 승인</section>
+        ) : (
+        <section>가입상태: 거부</section>
+      ))}
     </article>
   );
 }
 
 interface PropsType {
+  adminId: string;
   clubId: string;
   memberInfo: {
+    join_id: string;
     name: string;
     student_id: string;
     school_college: string;

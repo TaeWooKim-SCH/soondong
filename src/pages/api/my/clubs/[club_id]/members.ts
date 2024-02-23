@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const connectDb = await db.promise().getConnection();
         const members = await connectDb.query<RowDataPacket[]>(`
-          SELECT name, student_id, school_college, school_department, phone_number, member_position, join_state
+          SELECT join_id, name, student_id, school_college, school_department, phone_number, member_position, join_state
           FROM tb_club_members
             INNER JOIN tb_member
             ON tb_club_members.user_id = tb_member.id
@@ -50,7 +50,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'PUT':
       const body = req.body;
       console.log(body);
-      return res.status(405).send('잘못된 요청 메서드');
+      try {
+        const connectDb = await db.promise().getConnection();
+        const result = await connectDb.query<RowDataPacket[]>(`
+          UPDATE tb_club_members
+          SET join_state = '${body.state}'
+          WHERE join_id = '${body.join_id}'
+        `);
+        connectDb.release();
+        return res.status(200).json(body);
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send('내부 서버 오류');
+      }
     case 'DELETE':
       return res.status(405).send('잘못된 요청 메서드');
   }
