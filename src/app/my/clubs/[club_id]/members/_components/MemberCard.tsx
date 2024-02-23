@@ -3,6 +3,7 @@
 import { encrypt } from "@/utils/modules";
 
 export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
+  // react-query 도입 검토
   const joinStateHandler = async (admin_id: string, club_id: string, join_id: string, state: 'accept' | 'reject') => {
     const encryptedAdminId = encrypt(admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
     try {

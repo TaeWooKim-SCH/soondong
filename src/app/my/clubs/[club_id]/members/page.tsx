@@ -7,6 +7,15 @@ import { encrypt } from "@/utils/modules";
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
   const members:MemberType[] = await getData(params.club_id, session?.user.id);
+
+  // 대기중인 사용자 먼저 보여주기
+  members.sort((a, b) => {
+    if (a.join_state === 'pending' && b.join_state !== 'pending') {
+      return -1;
+    } else {
+      return 1;
+    }
+  })
   
   return (
     <Layout className="flex flex-col items-center">

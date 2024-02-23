@@ -49,7 +49,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).send('잘못된 요청 메서드');
     case 'PUT':
       const body = req.body;
-      console.log(body);
       try {
         const connectDb = await db.promise().getConnection();
         const result = await connectDb.query<RowDataPacket[]>(`
