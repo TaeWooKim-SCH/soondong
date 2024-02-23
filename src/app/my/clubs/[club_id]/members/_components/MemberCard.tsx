@@ -1,4 +1,10 @@
-export default function MemberCard({ memberInfo }: PropsType) {
+
+
+export default function MemberCard({ clubId, memberInfo }: PropsType) {
+  const joinStateHandler = async (studentId: string, state: 'accept' | 'reject') => {
+    const res = await fetch(`/api/my/clubs/${clubId}/members?user`)
+  }
+
   return (
     <article className="border-[1.5px] border-blue rounded-md p-3 sm:p-5 space-y-2 text-sm sm:text-base">
       <section className="font-bold text-blue mb-3 text-base sm:text-lg">{ memberInfo.name }</section>
@@ -11,8 +17,12 @@ export default function MemberCard({ memberInfo }: PropsType) {
         <section className="flex items-center">
           <div>가입상태:</div>
           <div className="ml-2">
-            <button className="text-xs border border-blue rounded-md px-3 py-1 mr-1">승인</button>
-            <button className="text-xs border border-red rounded-md px-3 py-1">거부</button>
+            <button
+              className="text-xs border-[1.5px] border-blue rounded-md px-3 py-1 mr-1"
+            >승인</button>
+            <button
+              className="text-xs border-[1.5px] border-red rounded-md px-3 py-1"
+            >거부</button>
           </div>
         </section>
       ) : (
@@ -23,6 +33,7 @@ export default function MemberCard({ memberInfo }: PropsType) {
 }
 
 interface PropsType {
+  clubId: string;
   memberInfo: {
     name: string;
     student_id: string;
