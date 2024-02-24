@@ -6,6 +6,7 @@
 # Stack
 - Typescript
 - Next.js
+- React-Hook-Form
 - Zustand
 - TailwindCSS
 - MySQL
