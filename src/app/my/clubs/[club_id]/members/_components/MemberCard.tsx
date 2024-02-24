@@ -15,7 +15,6 @@ export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
           state: state
         })
       });
-      
       if (!res.ok) {
         throw new Error('Failed to UPDATE');
       } else {
