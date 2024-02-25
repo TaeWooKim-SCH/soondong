@@ -1,8 +1,9 @@
 'use client'
 
-import LoadingUI from "@/app/_components/LoadingUI";
-import { encrypt } from "@/utils/modules";
 import { useMutation } from "@tanstack/react-query";
+
+import { encrypt } from "@/utils/modules";
+import LoadingUI from "@/app/_components/LoadingUI";
 
 export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
   // TODO: 커스텀훅으로 구현  
