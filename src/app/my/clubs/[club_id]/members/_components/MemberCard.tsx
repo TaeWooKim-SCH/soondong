@@ -1,30 +1,38 @@
 'use client'
 
+import LoadingUI from "@/app/_components/LoadingUI";
 import { encrypt } from "@/utils/modules";
+import { useMutation } from "@tanstack/react-query";
 
 export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
-  // react-query 도입 검토
-  const joinStateHandler = async (admin_id: string, club_id: string, join_id: string, state: 'accept' | 'reject') => {
-    const encryptedAdminId = encrypt(admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
-    try {
-      const res = await fetch(`/api/my/clubs/${club_id}/members?user=${encodeURIComponent(encryptedAdminId)}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          join_id: join_id,
-          state: state
-        })
-      });
-      
-      if (!res.ok) {
-        throw new Error('Failed to UPDATE');
-      } else {
-        window.location.reload();
-      }
-    } catch (err) {
+  // TODO: 커스텀훅으로 구현  
+  const updateJoinStateHandler = async (el: UpdateJoinHandlerParams) => {
+    const encryptedAdminId = encrypt(el.admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
+    const res = await fetch(`/api/my/clubs/${el.club_id}/members?user=${encodeURIComponent(encryptedAdminId)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        join_id: el.join_id,
+        state: el.state
+      })
+    });
+    if (!res.ok) {
+      throw new Error('Failed to update user data');
+    }
+    return res.json();
+  }
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateJoinStateHandler,
+    onSuccess: () => window.location.reload(),
+    onError: (err) => {
       console.error(err);
       return alert('가입상태 변경에 실패했습니다. 다시 시도해주세요.');
     }
+  });
+  const updateInfo = { admin_id: adminId, club_id: clubId, join_id: memberInfo.join_id };
+
+  if (isPending) {
+    return <LoadingUI />;
   }
 
   return (
@@ -41,11 +49,11 @@ export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
           <div className="ml-2">
             <button
               className="text-xs border-[1.5px] border-blue rounded-md px-3 py-1 mr-1"
-              onClick={() => joinStateHandler(adminId, clubId, memberInfo.join_id, 'accept')}
+              onClick={() => mutate({...updateInfo, state: 'accept'})}
             >승인</button>
             <button
               className="text-xs border-[1.5px] border-red rounded-md px-3 py-1"
-              onClick={() => joinStateHandler(adminId, clubId, memberInfo.join_id, 'reject')}
+              onClick={() => mutate({...updateInfo, state: 'reject'})}
             >거부</button>
           </div>
         </section>
@@ -71,4 +79,11 @@ interface PropsType {
     member_position: string;
     join_state: string;
   }
+}
+
+interface UpdateJoinHandlerParams {
+  admin_id: string;
+  club_id: string;
+  join_id: string;
+  state: 'accept' | 'reject';
 }

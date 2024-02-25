@@ -57,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           WHERE join_id = '${body.join_id}'
         `);
         connectDb.release();
-        return res.status(200).json(body);
+        return res.status(200).json({join_state: body.join_state});
       } catch (err) {
         console.error(err);
         return res.status(500).send('내부 서버 오류');
