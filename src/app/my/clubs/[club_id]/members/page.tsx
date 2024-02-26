@@ -1,8 +1,9 @@
-import Layout from "@/app/_components/layouts/Layout";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
-import MemberCard from "./_components/MemberCard";
+
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { encrypt } from "@/utils/modules";
+import Layout from "@/app/_components/layouts/Layout";
+import MemberCard from "./_components/MemberCard";
 
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
