@@ -33,7 +33,7 @@ export default async function Clubs({ searchParams }: PageProps) {
   return (
     <Layout>
       <section className="mb-5">
-        <div className="flex justify-start space-x-8 mb-10 text-sm text-blue overflow-x-auto md:justify-center">
+        <div className="flex justify-start space-x-8 pb-3 mb-10 text-sm text-blue overflow-x-auto md:justify-center">
           <CategoryLink categoryName="모든 동아리" searchParams={searchParams?.category}>
             <FaBorderAll size="30" color="#26539C" />
           </CategoryLink>
