@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function NavigationBar() {
-  const headerItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
   const [isNavigationBar, setIsNavigationBar] = useState(false);
 
   const NavigationBarHandler = () => {
@@ -16,9 +15,9 @@ export default function NavigationBar() {
   }
 
   return (
-    <section className="xl:hidden">
+    <section className="md:hidden">
       <div
-        className="ml-2 relative w-[25px] h-[25px] flex flex-col justify-evenly cursor-pointer z-50 sm:w-[30px] sm:h-[30px]"
+        className="ml-4 relative w-[25px] h-[25px] flex flex-col justify-evenly cursor-pointer z-40 sm:w-[30px] sm:h-[30px]"
         onClick={NavigationBarHandler}
       >
         <div
@@ -32,16 +31,28 @@ export default function NavigationBar() {
           }`}
         ></div>
       </div>
-      <div className={`absolute top-0 right-0 duration-300 w-full h-[100vh] bg-blue z-40 ${isNavigationBar ? "translate-y-0" : "-translate-y-[100%]"}`}>
+      <div className={`absolute top-0 right-0 duration-300 w-full h-[100vh] bg-blue z-30 ${isNavigationBar ? "translate-y-0" : "-translate-y-[100%]"}`}>
         <div className="px-20 py-24 flex flex-col items-center text-white sm:text-xl">
-          {headerItems.map((item) => (
-            <Link
-              className="mb-5"
-              href={`/clubs?category=${item}`}
-              onClick={linkClickHandler}
-              key={item}
-            >{item}</Link>
-          ))}
+          <Link
+            className="mb-5"
+            href="/home"
+            onClick={linkClickHandler}
+          >홈</Link>
+          <Link
+            className="mb-5"
+            href={`/clubs?category=${encodeURIComponent('모든 동아리')}`}
+            onClick={linkClickHandler}
+          >동아리 목록</Link>
+          <Link
+            className="mb-5"
+            href="/notification"
+            onClick={linkClickHandler}
+          >공지사항</Link>
+          <Link
+            className="mb-5"
+            href="https://open.kakao.com/o/srTkVkcg"
+            onClick={linkClickHandler}
+          >문의하기</Link>
         </div>
       </div>
     </section>

@@ -5,8 +5,6 @@ import LoginSection from "../header/LoginSection";
 import NavigationBar from "../NavigationBar";
 
 export default function HeaderNav() {
-  const headerItems = ["모든 동아리", "공연예술", "종교", "봉사", "교양학술", "체육", "전시창작", "준동아리"];
-
   return (
     <header className="h-[10vh] px-5 flex justify-between items-center sm:px-10">
       <Link href="/home">
@@ -20,10 +18,11 @@ export default function HeaderNav() {
         />
       </Link>
       <section className="flex items-center">
-        <div className="hidden space-x-7 mr-20 xl:block">
-          {headerItems.map((item) => (
-            <Link href={`/clubs?category=${item}`} key={item}>{item}</Link>
-          ))}
+        <div className="hidden space-x-7 mr-10 md:block">
+          <Link href="/home">홈</Link>
+          <Link href={`/clubs?category=${encodeURIComponent('모든 동아리')}`}>동아리 목록</Link>
+          <Link href="/notification">공지사항</Link>
+          <Link href="https://open.kakao.com/o/srTkVkcg">문의하기</Link>
         </div>
         <LoginSection />
         <NavigationBar />
