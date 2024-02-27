@@ -67,6 +67,7 @@ export default function ClubAddForm() {
     setQuestion('');
   }
 
+  // 질문 취소 버튼 클릭 핸들러
   const questionCancleClickHandler = (idx: number) => {
     const result = watch('club_join_questions').filter((el, elIdx) => idx !== elIdx);
     setValue('club_join_questions', result);

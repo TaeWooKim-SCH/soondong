@@ -50,6 +50,11 @@ export default function ClubJoinBtn({ clubId }: PropsType) {
         className="bg-blue px-3 py-1 rounded-md text-white text-sm sm:text-base sm:px-4"
         onClick={clubJoinClickHandler}
       >가입신청</button>
+      {/* 모달은 버전 2에서 구현 */}
+      {/* <Link
+        href={`/clubs/${clubId}?ismodal=true`}
+        className="bg-blue px-3 py-1 rounded-md text-white text-sm sm:text-base sm:px-4"
+      >가입신청</Link> */}
       {isLoading && <LoadingUI />}
     </>
   );
