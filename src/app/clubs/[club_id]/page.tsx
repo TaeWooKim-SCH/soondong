@@ -7,6 +7,7 @@ import Layout from "@/app/_components/layouts/Layout";
 import { calculRemainDate } from "@/utils/modules";
 import ClubJoinBtn from "./_components/ClubJoinBtn";
 import Loading from "./loading";
+import JoinQuestionsSection from "./_components/JoinQuestionsSection";
 
 export default async function ClubDetail({ params }: PageProps) {
   const clubInfo: ClubsData = await getData(params.club_id);
@@ -53,7 +54,7 @@ export default async function ClubDetail({ params }: PageProps) {
           alt="동아리 포스터"
         />
       </section>
-      <section className="w-full border-[1.5px] border-blue p-3 rounded-md text-sm sm:text-lg sm:w-[500px] sm:p-5">
+      <section className="w-full border-[1.5px] border-blue p-3 mb-5 rounded-md text-sm sm:text-lg sm:w-[500px] sm:p-5 sm:mb-10">
         {clubPost.map((post, idx) => {
           if (!post) {
             return <br key={idx} />;
@@ -61,6 +62,9 @@ export default async function ClubDetail({ params }: PageProps) {
           return <p className="break-words" key={idx}>{post}</p>;
         })}
       </section>
+      <JoinQuestionsSection questions={clubInfo.club_join_questions} />
+      {/* 가입 신청 모달은 버전 2에서 구현 */}
+      {/* {isModal && <JoinModal />} */}
     </Layout>
   );
 }
@@ -78,7 +82,7 @@ async function getData(club_id: string) {
 interface PageProps {
   params: {
     club_id: string;
-  }
+  },
 }
 
 interface ClubsData {
@@ -86,6 +90,7 @@ interface ClubsData {
   club_name: string;
   club_description: string;
   club_post: string;
+  club_join_questions: string[];
   club_img_url: string;
   club_recruit_period: string;
   club_like_count: number;
