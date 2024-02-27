@@ -26,8 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const connectDb = await db.promise().getConnection();
       const result = await connectDb.query(
-        `insert into tb_club(club_id, club_admin_id, club_name, club_description, club_post, club_img_url, club_recruit_period, club_category)
-        values('${club_id}', '${club_admin_id}', '${body.club_name}', '${body.club_description}', '${body.club_post}', '${body.club_img_url}', '${body.club_recruit_period}', '${body.club_category}');`
+        `insert into tb_club(club_id, club_admin_id, club_name, club_description, club_post, club_join_questions, club_img_url, club_recruit_period, club_category)
+        values('${club_id}', '${club_admin_id}', '${body.club_name}', '${body.club_description}', '${body.club_post}', '${body.club_join_questions.length ? JSON.stringify(body.club_join_questions) : null}', '${body.club_img_url}', '${body.club_recruit_period}', '${body.club_category}');`
       );
       connectDb.release();
       return res.status(201).json(body);
@@ -43,6 +43,7 @@ interface ClubAddFormData {
   club_category: string;
   club_description: string;
   club_post: string;
+  club_join_questions: string[];
   club_recruit_period: string;
   period_start: string;
   period_end: string;
