@@ -43,6 +43,7 @@ interface ClubType {
   club_name: string;
   club_description: string;
   club_post: string;
+  club_join_questions: string[];
   club_img_url: string;
   club_recruit_period: string;
   club_like_count: number;

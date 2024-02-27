@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const result = {...row[0]};
           delete result.club_admin_id;
           delete result.club_join_state;
+          result.club_join_questions = JSON.parse(result.club_join_questions);
           connectDb.release();
           return res.status(200).json(result);
         } catch (err) {
@@ -37,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const connectDb = await db.promise().getConnection();
           const [ row ] = await connectDb.query<RowDataPacket[]>(`
             UPDATE tb_club
-            SET club_description = '${body.club_description}', club_post = '${body.club_post}', club_recruit_period = '${body.club_recruit_period}'
+            SET club_description = '${body.club_description}', club_post = '${body.club_post}', club_join_questions = '${body.club_join_questions.length ? JSON.stringify(body.club_join_questions) : null}', club_recruit_period = '${body.club_recruit_period}'
             WHERE club_id = '${club_id}'
           `);
           connectDb.release();
@@ -59,6 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 interface UpdateBodyType {
   club_description: string;
   club_post: string;
+  club_join_questions: string[];
   club_recruit_period: string;
   period_start: string;
   period_end: string;
