@@ -6,6 +6,8 @@ import { encrypt } from "@/utils/modules";
 import LoadingUI from "@/app/_components/LoadingUI";
 
 export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
+  const joinQuestions: [string, string][] | null = memberInfo.join_questions ? Object.entries(JSON.parse(memberInfo.join_questions)) : null;
+  
   // TODO: 커스텀훅으로 구현  
   const updateJoinStateHandler = async (el: UpdateJoinHandlerParams) => {
     const encryptedAdminId = encrypt(el.admin_id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY);
@@ -38,7 +40,15 @@ export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
 
   return (
     <article className="border-[1.5px] border-blue rounded-md p-3 sm:p-5 space-y-2 text-sm sm:text-base">
-      <section className="font-bold text-blue mb-3 text-base sm:text-lg">{ memberInfo.name }</section>
+      <section className="font-bold text-blue text-base sm:text-lg">{ memberInfo.name }</section>
+      <section className="border-[1.5px] border-blue rounded-md p-3 text-sm sm:text-base">
+        {joinQuestions && joinQuestions.map((question, idx) => (
+          <article className="mb-3" key={idx}>
+            <div className="text-blue font-bold mb-1">Q{idx + 1}. {question[0]}</div>
+            <div>{question[1]}</div>
+          </article>
+        ))}
+      </section>
       <section>학번: { memberInfo.student_id }</section>
       <section>단과대: { memberInfo.school_college }</section>
       <section>학과: { memberInfo.school_department }</section>
@@ -77,6 +87,7 @@ interface PropsType {
     school_college: string;
     school_department: string;
     phone_number: string;
+    join_questions: string | null;
     member_position: string;
     join_state: string;
   }

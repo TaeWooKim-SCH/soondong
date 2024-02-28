@@ -19,6 +19,7 @@ export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
     }
 
     try {
+      // 가입자 정보 재확인 요청
       setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`);
       if (res.status === 401) {
@@ -38,6 +39,7 @@ export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
           return;
         }
         else {
+          // 가입 요청
           const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

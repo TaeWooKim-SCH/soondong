@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const connectDb = await db.promise().getConnection();
         const members = await connectDb.query<RowDataPacket[]>(`
-          SELECT join_id, name, student_id, school_college, school_department, phone_number, member_position, join_state
+          SELECT join_id, name, student_id, school_college, school_department, phone_number, join_questions, member_position, join_state
           FROM tb_club_members
             INNER JOIN tb_member
             ON tb_club_members.user_id = tb_member.id

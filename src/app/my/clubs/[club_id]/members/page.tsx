@@ -8,7 +8,7 @@ import MemberCard from "./_components/MemberCard";
 export default async function MyClubMembers({ params }: PageProps) {
   const session = await getServerSession(authOptions);
   const members:MemberType[] = await getData(params.club_id, session?.user.id);
-
+  
   // 대기중인 사용자 먼저 보여주기
   members.sort((a, b) => {
     if (a.join_state === 'pending' && b.join_state !== 'pending') {
@@ -24,7 +24,7 @@ export default async function MyClubMembers({ params }: PageProps) {
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>
       <section>
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+        <ul className="grid grid-cols-1">
           {members.map((memberInfo) => (
             <MemberCard
               adminId={session?.user.id}
@@ -66,6 +66,7 @@ interface MemberType {
   school_college: string;
   school_department: string;
   phone_number: string;
+  join_questions: string | null;
   member_position: string;
   join_state: string;
 }
