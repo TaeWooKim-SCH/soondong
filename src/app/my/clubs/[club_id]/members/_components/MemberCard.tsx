@@ -39,7 +39,7 @@ export default function MemberCard({ adminId, clubId, memberInfo }: PropsType) {
   }
 
   return (
-    <article className="border-[1.5px] border-blue rounded-md p-3 sm:p-5 space-y-2 text-sm sm:text-base">
+    <article className="max-w-[800px] border-[1.5px] border-blue rounded-md p-3 sm:p-5 space-y-2 text-sm sm:text-base">
       <section className="font-bold text-blue text-base sm:text-lg">{ memberInfo.name }</section>
       <section className="border-[1.5px] border-blue rounded-md p-3 text-sm sm:text-base">
         {joinQuestions && joinQuestions.map((question, idx) => (
