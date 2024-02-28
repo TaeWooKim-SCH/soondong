@@ -5,11 +5,21 @@ import { throttle } from "lodash";
 
 import LoadingUI from "@/app/_components/LoadingUI";
 
-export default function ClubJoinBtn({ clubId }: PropsType) {
+export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
   const [isLoading, setIsLoading] = useState(false);
 
   const clubJoinClickHandler = throttle(async () => {
+    // 가입 질문이 있을 때 검증
+    if (isForm) {
+      for (let i in joinForm) {
+        if (!joinForm[i]) {
+          return alert(`'${i}'에 대한 답변을 작성해주세요.`);
+        }
+      }
+    }
+
     try {
+      // 가입자 정보 재확인 요청
       setIsLoading(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`);
       if (res.status === 401) {
@@ -29,13 +39,20 @@ export default function ClubJoinBtn({ clubId }: PropsType) {
           return;
         }
         else {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`, { method: 'POST' });
+          // 가입 요청
+          const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: isForm ? JSON.stringify(joinForm) : null
+          });
           // TODO: 로그인 상태가 아니면 신청못함
           if (!res.ok) {
-            return alert('가입 신청에 실패했습니다.');
+            alert('가입 신청에 실패했습니다.');
+            window.location.reload();
           }
           else {
-            return alert('가입 신청에 성공했습니다.');
+            alert('가입 신청에 성공했습니다.');
+            window.location.reload();
           }
         }
       }
@@ -62,4 +79,6 @@ export default function ClubJoinBtn({ clubId }: PropsType) {
 
 interface PropsType {
   clubId: string;
+  isForm: boolean;
+  joinForm: { [key: string]: string; };
 }

@@ -11,7 +11,7 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
   const remainPeriod = calculRemainDate(clubInfo.club_recruit_period);
   const clubPost = clubInfo.club_post.split('\n');
   const [joinForm, setJoinForm] = useState<FormInputs>({});
-
+  
   const questionInputChangeHandler = (question: string, e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const result = {...joinForm};
     result[question] = e.target.value;
@@ -19,9 +19,11 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
   }
 
   useEffect(() => {
-    clubInfo.club_join_questions.forEach((question) => {
-      setJoinForm(prevForm => ({ ...prevForm, [question]: '' }));
-    });
+    if (clubInfo.club_join_questions) {
+      clubInfo.club_join_questions.forEach((question) => {
+        setJoinForm(prevForm => ({ ...prevForm, [question]: '' }));
+      });
+    }
   }, [clubInfo.club_join_questions]);
 
   return (
@@ -50,7 +52,11 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
             <IoMdHeartEmpty size="30" color="#26539C" />
           </div> */}
           <Suspense fallback={<Loading />}>
-            <ClubJoinBtn clubId={clubInfo.club_id} />
+            <ClubJoinBtn
+              clubId={clubInfo.club_id}
+              isForm={clubInfo.club_join_questions ? true : false}
+              joinForm={joinForm}
+            />
           </Suspense>
         </article>
       </section>
@@ -71,20 +77,24 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
           return <p className="break-words" key={idx}>{post}</p>;
         })}
       </section>
-      <section className="w-full sm:w-[500px]">
-        <div className="text-2xl text-blue font-bold mb-5">가입질문</div>
-        <div className="space-y-5">
-          {clubInfo.club_join_questions.map((question, idx) => (
-            <article className="w-full border-[1.5px] border-blue p-5 rounded-md" key={idx}>
-              <div className="text-blue font-bold mb-3">Q{idx + 1}. {question}</div>
-              <textarea
-                className="w-full min-h-[200px] border border-silver rounded-md px-3 py-2 outline-none resize-none"
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => questionInputChangeHandler(question, e)}
-              />
-            </article>
-          ))}
-        </div>
-      </section>
+      {clubInfo.club_join_questions && (
+        <section className="w-full sm:w-[500px]">
+          <div className="text-2xl text-blue font-bold mb-5">가입질문</div>
+          <div className="space-y-5">
+            {clubInfo.club_join_questions.map((question, idx) => (
+              <article className="w-full border-[1.5px] border-blue p-5 rounded-md" key={idx}>
+                <div className="text-blue font-bold mb-3">Q{idx + 1}. {question}</div>
+                <textarea
+                  className="w-full min-h-[200px] border border-silver rounded-md px-3 py-2 outline-none resize-none"
+                  value={joinForm[question]}
+                  placeholder="답변이 없으면 없음으로 입력해주세요."
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => questionInputChangeHandler(question, e)}
+                />
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
       {/* 가입 신청 모달은 버전 2에서 구현 */}
       {/* {isModal && <JoinModal />} */}
     </>
