@@ -25,6 +25,8 @@
 ![image](https://github.com/TaeWooKim-SCH/soondong/assets/79956107/9f93c16d-d667-4742-b381-85ff07a61244)
 <img width="1101" alt="image" src="https://github.com/TaeWooKim-SCH/soondong/assets/79956107/c565f310-5fc9-4a48-a76f-6f299725e41e">
 <img width="1091" alt="image" src="https://github.com/TaeWooKim-SCH/soondong/assets/79956107/04c9e055-24fb-4741-8acf-8a2833e59c78">
+<img width="1435" alt="image" src="https://github.com/TaeWooKim-SCH/soondong/assets/79956107/3723a209-d4b9-4234-8bd2-0e9c957123f9">
+
 
 
 
