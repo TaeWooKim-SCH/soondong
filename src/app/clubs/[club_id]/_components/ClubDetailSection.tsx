@@ -11,7 +11,7 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
   const remainPeriod = calculRemainDate(clubInfo.club_recruit_period);
   const clubPost = clubInfo.club_post.split('\n');
   const [joinForm, setJoinForm] = useState<FormInputs>({});
-  console.log(clubInfo.club_join_questions);
+  
   const questionInputChangeHandler = (question: string, e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const result = {...joinForm};
     result[question] = e.target.value;
@@ -52,7 +52,11 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
             <IoMdHeartEmpty size="30" color="#26539C" />
           </div> */}
           <Suspense fallback={<Loading />}>
-            <ClubJoinBtn clubId={clubInfo.club_id} />
+            <ClubJoinBtn
+              clubId={clubInfo.club_id}
+              isForm={clubInfo.club_join_questions ? true : false}
+              joinForm={joinForm}
+            />
           </Suspense>
         </article>
       </section>
@@ -82,6 +86,8 @@ export default function ClubDetailSection({ clubInfo }: PropsType) {
                 <div className="text-blue font-bold mb-3">Q{idx + 1}. {question}</div>
                 <textarea
                   className="w-full min-h-[200px] border border-silver rounded-md px-3 py-2 outline-none resize-none"
+                  value={joinForm[question]}
+                  placeholder="답변이 없으면 없음으로 입력해주세요."
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => questionInputChangeHandler(question, e)}
                 />
               </article>

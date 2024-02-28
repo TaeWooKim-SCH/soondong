@@ -32,11 +32,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'POST':
       try {
         const { club_id } = req.query;
+        const body = req.body;
         const join_id = generateRandomString();
         const connectDb = await db.promise().getConnection();
         const result = await connectDb.query<RowDataPacket[]>(
-          `insert into tb_club_members(join_id, club_id, user_id)
-          values('${join_id}', '${club_id}', '${token.id}')`
+          `insert into tb_club_members(join_id, club_id, user_id, join_questions)
+          values('${join_id}', '${club_id}', '${token.id}', '${JSON.stringify(body)}')`
         );
         connectDb.release();
         return res.status(201).send('가입 신청 성공');
