@@ -5,7 +5,7 @@ export default async function ClubDetail({ params }: PageProps) {
   const clubInfo: ClubsData = await getData(params.club_id);
 
   return (
-    <Layout className="flex flex-col items-center">
+    <Layout className="flex flex-col items-center py-10">
       <ClubDetailSection clubInfo={clubInfo} />
     </Layout>
   );

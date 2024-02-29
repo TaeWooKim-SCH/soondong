@@ -6,7 +6,7 @@ export default async function MyClubInfoFix({ params }: PageProps) {
   const clubInfo: ClubType = await getData(params.club_id);
 
   return (
-    <Layout className="flex flex-col items-center">
+    <Layout className="flex flex-col items-center py-10">
       <section className="flex flex-col items-center mb-5 sm:mb-10">
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 정보 수정 {`<${clubInfo.club_name}>`} </div>
       </section>
