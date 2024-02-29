@@ -7,7 +7,8 @@ export default function Layout({ children, className }: { children: React.ReactN
       {/*  */}
       <HeaderNav />
       {/*  */}
-      <section className={`min-h-[80vh] px-10 py-10 sm:px-16 md:px-28 xl:px-44 ${className}`}>{ children }</section>
+      <section className={`min-h-[80vh] ${className}`}>{ children }</section>
+      {/* <section className={`min-h-[80vh] px-10 py-10 sm:px-16 md:px-28 xl:px-44 ${className}`}>{ children }</section> */}
       {/*  */}
       <Footer />
       {/*  */}

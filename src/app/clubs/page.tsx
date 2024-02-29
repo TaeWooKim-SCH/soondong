@@ -31,7 +31,7 @@ export default async function Clubs({ searchParams }: PageProps) {
   const clubsData: ClubType[] = await getData(searchParams?.category);
 
   return (
-    <Layout>
+    <Layout className="px-10 py-10 sm:px-16 md:px-28 xl:px-44">
       <section className="mb-5">
         <div className="flex justify-start space-x-8 pb-3 mb-10 text-sm text-blue overflow-x-auto md:justify-center">
           <CategoryLink categoryName="모든 동아리" searchParams={searchParams?.category}>
