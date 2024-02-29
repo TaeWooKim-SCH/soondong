@@ -24,7 +24,8 @@ export default async function MyClubMembers({ params }: PageProps) {
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>
       <section>
-        <ul className="grid grid-cols-1">
+        <ul className={`grid grid-cols-1 gap-5 ${!members[0].join_questions && 'sm:grid-cols-2 md:grid-cols-3'}`}>
+        {/* <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3"> */}
           {members.map((memberInfo) => (
             <MemberCard
               adminId={session?.user.id}
@@ -66,7 +67,7 @@ interface MemberType {
   school_college: string;
   school_department: string;
   phone_number: string;
-  join_questions: string | null;
+  join_questions: { [key: string]: string[] } | null;
   member_position: string;
   join_state: string;
 }

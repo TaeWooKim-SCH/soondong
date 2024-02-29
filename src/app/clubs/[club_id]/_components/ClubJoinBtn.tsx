@@ -40,10 +40,14 @@ export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
         }
         else {
           // 가입 요청
+          const body: {[key: string]: string[];} = {};
+          for (let i in joinForm) { // textarea 줄바꿈 처리
+            body[i] = joinForm[i].includes('\n') ? joinForm[i].split('\n') : [joinForm[i]];
+          }
           const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/clubs/join/${clubId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: isForm ? JSON.stringify(joinForm) : null
+            body: JSON.stringify(body)
           });
           // TODO: 로그인 상태가 아니면 신청못함
           if (!res.ok) {
