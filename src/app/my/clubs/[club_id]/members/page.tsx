@@ -19,7 +19,7 @@ export default async function MyClubMembers({ params }: PageProps) {
   })
   
   return (
-    <Layout className="flex flex-col items-center py-10">
+    <Layout className="flex flex-col items-center px-10 py-10">
       <section className="flex flex-col items-center mb-5 sm:mb-10">
         <div className="text-2xl text-blue font-bold md:text-[2rem]">동아리 구성원 관리</div>
       </section>

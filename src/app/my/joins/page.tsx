@@ -22,7 +22,7 @@ export default async function MyJoins() {
   const joinsData: JoinData[] = await getData(session?.user.id);
   
   return (
-    <Layout className="flex flex-col items-center">
+    <Layout className="flex flex-col items-center px-10 py-10">
       <section className="w-full mb-5 sm:w-[500px]">
         <Title>동아리 신청 목록</Title>
         <div className="flex justify-end items-center mt-3">
