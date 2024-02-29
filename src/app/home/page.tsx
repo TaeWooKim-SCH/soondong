@@ -19,7 +19,7 @@ export default async function Home() {
   return (
     <Layout className="px-0 py-0 sm:px-0 md:px-0 xl:px-0">
       <Carousel clubsData={clubsData} />
-      <section className="mb-10 px-10 py-10 sm:px-16 md:px-28 xl:px-44">
+      <section className="mb-10 px-5 py-10 sm:px-16 md:px-28 xl:px-44">
         <Title className="mb-5">현재 모집중인 동아리</Title>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-10">
           {clubsData.map((clubInfo) => (
