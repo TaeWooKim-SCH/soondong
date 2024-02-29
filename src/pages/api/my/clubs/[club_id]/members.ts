@@ -39,6 +39,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             ON tb_club_members.user_id = tb_member.id
           WHERE tb_club_members.club_id = '${club_id}'
         `);
+        members[0].forEach((member) => {
+          member.join_questions = JSON.parse(member.join_questions);
+        })
         connectDb.release();
         return res.status(200).json(members[0]);
       } catch (err) {
