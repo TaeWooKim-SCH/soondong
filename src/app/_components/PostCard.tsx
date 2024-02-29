@@ -13,7 +13,7 @@ export default function PostCard({ clubInfo }: PropsType) {
         src={clubInfo.club_img_url}
         alt="대표이미지"
         width={500}
-        height={400}
+        height={0}
         priority={true}
       />
       <section className="px-4 py-3 bg-white rounded-b-md">
