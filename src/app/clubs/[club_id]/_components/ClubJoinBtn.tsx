@@ -4,11 +4,18 @@ import { useState } from "react";
 import { throttle } from "lodash";
 
 import LoadingUI from "@/app/_components/LoadingUI";
+import { useSession } from "next-auth/react";
 
 export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
+  const { status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   const clubJoinClickHandler = throttle(async () => {
+    // 로그인 상태일 때만 가입 가능
+    if (status === 'unauthenticated') {
+      return alert('로그인 후 시도해주세요.');
+    }
+
     // 가입 질문이 있을 때 검증
     if (isForm) {
       for (let i in joinForm) {
@@ -49,7 +56,6 @@ export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
           });
-          // TODO: 로그인 상태가 아니면 신청못함
           if (!res.ok) {
             alert('가입 신청에 실패했습니다.');
             window.location.reload();
