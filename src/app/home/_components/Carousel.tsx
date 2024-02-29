@@ -29,13 +29,13 @@ export default function Carousel({ clubsData }: PropsType) {
   }, [clubsData.length, current])
 
   return (
-    <section className="w-[100vw] h-[400px] relative shadow-lg">
-      <div className={`absolute top-0 left-0 flex duration-500 w-[${carouselWidth}] ${moveStyle[current]}`}>
+    <section className="w-[100vw] h-[300px] relative shadow-lg md:h-[400px]">
+      <div className={`h-full absolute top-0 left-0 flex duration-500 w-[${carouselWidth}] ${moveStyle[current]}`}>
         {carouselClubs.map((clubInfo) => (
-          <article className="w-[100vw] h-[400px] flex justify-center items-center" key={clubInfo.club_id}>
-            <div className="max-w-[600px] flex justify-center items-start">
+          <article className="w-[100vw] h-full flex justify-center items-center" key={clubInfo.club_id}>
+            <div className="max-w-[600px] flex justify-center items-center px-5 sm:item-start sm:px-0">
               <Image
-                className="w-[240px] h-[320px] object-cover rounded-md shadow-lg"
+                className="w-[150px] h-[200px] object-cover rounded-md shadow-lg sm:w-[210px] sm:h-[280px] md:w-[240px] md:h-[320px]"
                 src={clubInfo.club_img_url}
                 width={500}
                 height={0}
@@ -45,9 +45,9 @@ export default function Carousel({ clubsData }: PropsType) {
                 <div
                   className="text-xs text-white rounded-full bg-blue inline-block px-2 pt-[2px] pb-[3px] mb-1"
                 >{clubInfo.club_category}</div>
-                <div className="text-3xl text-blue font-bold">{clubInfo.club_name}</div>
-                <div className="mt-3">{clubInfo.club_description}</div>
-                <div className="p-3 mt-3 bg-silver/35 rounded-md text-sm">{clubInfo.club_post.substring(0, 200)}...</div>
+                <div className="text-xl text-blue font-bold sm:text-2xl md:text-3xl">{clubInfo.club_name}</div>
+                <div className="mt-3 text-sm md:text-base">{clubInfo.club_description}</div>
+                <div className="p-3 mt-3 bg-silver/35 rounded-md text-xs hidden sm:block md:text-sm">{clubInfo.club_post.substring(0, 200)}...</div>
               </div>
             </div>
           </article>
