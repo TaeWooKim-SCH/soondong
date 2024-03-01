@@ -1,7 +1,9 @@
 'use client'
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function Carousel({ clubsData }: PropsType) {
   const randomInt = Math.floor(Math.random() * (clubsData.length - 4));
@@ -22,7 +24,7 @@ export default function Carousel({ clubsData }: PropsType) {
       } else {
         setCurrent(current + 1);
       }
-    }, 3000);
+    }, 4000);
     return () => {
       clearInterval(interval);
     };
@@ -47,7 +49,16 @@ export default function Carousel({ clubsData }: PropsType) {
                 >{clubInfo.club_category}</div>
                 <div className="text-xl text-blue font-bold sm:text-2xl md:text-3xl">{clubInfo.club_name}</div>
                 <div className="mt-3 text-sm md:text-base">{clubInfo.club_description}</div>
-                <div className="p-3 mt-3 bg-silver/35 rounded-md text-xs hidden sm:block md:text-sm">{clubInfo.club_post.substring(0, 200)}...</div>
+                <div className="p-3 mt-3 bg-silver/35 rounded-md text-xs hidden sm:block md:text-sm">{clubInfo.club_post.substring(0, 100)}...</div>
+                <Link
+                  className="flex justify-end items-center mt-10 text-sm text-[#575757]"
+                  href={`/clubs/${clubInfo.club_id}`}
+                >
+                  <div className="mr-1">{clubInfo.club_name} 더보기</div>
+                  <div>
+                    <FaArrowRightLong size="15" />
+                  </div>
+                </Link>
               </div>
             </div>
           </article>
