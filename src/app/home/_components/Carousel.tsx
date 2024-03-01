@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 export default function Carousel({ clubsData }: PropsType) {
   const randomInt = Math.floor(Math.random() * (clubsData.length - 4));
@@ -16,6 +17,26 @@ export default function Carousel({ clubsData }: PropsType) {
     2: 'translate-x-[-200vw] bg-[#eae2b7]',
     3: 'translate-x-[-300vw] bg-[#ebd3be]',
   };
+
+  const arrowLeftClickHandler = () => {
+    setCurrent((prev) => {
+      if (prev <= 0) {
+        return carouselClubs.length - 1;
+      } else {
+        return prev - 1;
+      }
+    })
+  }
+
+  const arrowRightClickHandler = () => {
+    setCurrent((prev) => {
+      if (prev >= carouselClubs.length - 1) {
+        return 0;
+      } else {
+        return prev + 1;
+      }
+    })
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -64,6 +85,13 @@ export default function Carousel({ clubsData }: PropsType) {
           </article>
         ))}
       </div>
+      <div className="absolute top-1/2 left-10 -translate-y-1/2 cursor-pointer" onClick={arrowLeftClickHandler}>
+        <FaAngleLeft size="40" color="#6D6C6C" />
+      </div>
+      <div className="absolute top-1/2 right-10 -translate-y-1/2 cursor-pointer" onClick={arrowRightClickHandler}>
+        <FaAngleRight size="40" color="#6D6C6C" />
+      </div>
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">{current + 1} / {carouselClubs.length}</div>
     </section>
   );
 }
