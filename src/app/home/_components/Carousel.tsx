@@ -11,10 +11,10 @@ export default function Carousel({ clubsData }: PropsType) {
   const carouselWidth = `${clubsData.length * 100}vw`;
   const [current, setCurrent] = useState<number>(0);
   const moveStyle: {[key: number]: string;} = {
-    0: 'translate-x-0 bg-[#B5C0D0]',
+    0: 'translate-x-0 bg-[#c6d1e0]',
     1: 'translate-x-[-100vw] bg-[#CCD3CA]',
-    2: 'translate-x-[-200vw] bg-[#cec2b8]',
-    3: 'translate-x-[-300vw] bg-[#EED3D9]',
+    2: 'translate-x-[-200vw] bg-[#eae2b7]',
+    3: 'translate-x-[-300vw] bg-[#ebd3be]',
   };
 
   useEffect(() => {
