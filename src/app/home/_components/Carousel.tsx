@@ -85,13 +85,21 @@ export default function Carousel({ clubsData }: PropsType) {
           </article>
         ))}
       </div>
-      <div className="absolute top-1/2 left-10 -translate-y-1/2 cursor-pointer" onClick={arrowLeftClickHandler}>
+      <div className="absolute top-1/2 left-10 -translate-y-1/2 arrowLeftContainer cursor-pointer hidden md:block" onClick={arrowLeftClickHandler}>
         <FaAngleLeft size="40" color="#6D6C6C" />
       </div>
-      <div className="absolute top-1/2 right-10 -translate-y-1/2 cursor-pointer" onClick={arrowRightClickHandler}>
+      <div className="absolute top-1/2 right-10 -translate-y-1/2 arrowRightContainer cursor-pointer hidden md:block" onClick={arrowRightClickHandler}>
         <FaAngleRight size="40" color="#6D6C6C" />
       </div>
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">{current + 1} / {carouselClubs.length}</div>
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center">
+        <div className="cursor-pointer md:hidden" onClick={arrowLeftClickHandler}>
+          <FaAngleLeft size="20" color="#6D6C6C" />
+        </div>
+        <div className="mx-3">{current + 1} / {carouselClubs.length}</div>
+        <div className="cursor-pointer md:hidden" onClick={arrowRightClickHandler}>
+          <FaAngleRight size="20" color="#6D6C6C" />
+        </div>
+      </div>
     </section>
   );
 }
