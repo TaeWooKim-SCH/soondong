@@ -33,6 +33,7 @@ export default function SignupForm() {
       password_confirm: '',
       name: '',
       student_id: '',
+      student_id_auth: false,
       school_college: '단과대 선택',
       school_department: '학과 선택',
       phone_number: '',
@@ -86,6 +87,36 @@ export default function SignupForm() {
       console.error('중복확인 요청에 실패했습니다.', err);
     }
   }, 2000);
+
+  // 학번 중복확인 요청 핸들러
+  const existStudentIdAuthHandler = throttle(async (studentId: string) => {
+    if (!studentId) {
+      return alert('학번을 입력해주세요.');
+    }
+    try {
+      setLoading(true);
+      const res = await fetch('/api/auth/student-id', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ student_id: studentId })
+      });
+      setLoading(false);
+      if (res.status === 409) {
+        return alert('이미 가입된 학번입니다.');
+      }
+      else if (res.status === 200) {
+        setValue('student_id_auth', true);
+        return alert('사용 가능한 학번입니다.');
+      }
+      else {
+        return alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
+      }
+    } catch (err) {
+      console.error('중복확인 요청에 실패했습니다.', err);
+    }
+  }, 2000)
   
   // 이메일 인증번호 전송 요청 핸들러
   const emailAuthHandler = throttle(async (email: string) => {
@@ -130,20 +161,17 @@ export default function SignupForm() {
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     if (!data.id_auth) {
       return alert('아이디 중복확인을 해주세요.');
-    }
-    else if (!data.name) {
+    } else if (!data.name) {
       return alert('이름을 입력해주세요.');
-    }
-    else if (data.student_id.length !== 8) {
+    } else if (!data.student_id_auth) {
+      return alert('학번 중복확인을 해주세요.');
+    } else if (data.student_id.length !== 8) {
       return alert('학번을 다시 확인해주세요.');
-    }
-    else if (data.school_college === '단과대 선택' || data.school_department === '학과 선택') {
+    } else if (data.school_college === '단과대 선택' || data.school_department === '학과 선택') {
       return alert('단과대와 학과를 선택해주세요.')
-    }
-    else if (!data.school_auth) {
+    } else if (!data.school_auth) {
       return alert('이메일 인증을 해주세요.');
-    }
-    else if (!data.agree_use || !data.agree_privacy) {
+    } else if (!data.agree_use || !data.agree_privacy) {
       return alert('약관에 동의를 해주세요.');
     }
 
@@ -155,7 +183,8 @@ export default function SignupForm() {
         name: data.name,
         phone_number: data.phone_number,
         school_college: data.school_college,
-        school_department: data.school_department
+        school_department: data.school_department,
+        school_email: data.school_email
       };
 
       const res = await fetch('/api/signup', {
@@ -179,12 +208,12 @@ export default function SignupForm() {
   }, 2000);
   
   return (
-    <form className="grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-      { isSubmitting && <LoadingUI /> }
+    <form className="w-[315px] grid grid-cols-1" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+      { (isSubmitting || loading) && <LoadingUI /> }
       <section className="mb-3">
         <div>
           <SignupInput
-            className={`${watch('id_auth') || loading ? 'bg-light-silver text-silver' : ''}`}
+            className={`${watch('id_auth') ? 'bg-light-silver text-silver' : ''}`}
             placeholder="아이디"
             disabled={watch('id_auth')}
             register={{...register('id', {
@@ -206,6 +235,7 @@ export default function SignupForm() {
       </section>
       <section className="mb-3">
         <SignupInput
+          className="w-full"
           type="password"
           placeholder="비밀번호"
           register={{...register('password', {
@@ -220,6 +250,7 @@ export default function SignupForm() {
       </section>
       <section className="mb-3">
         <SignupInput
+          className="w-full"
           type="password"
           placeholder="비밀번호 확인"
           register={{...register('password_confirm', {
@@ -236,15 +267,24 @@ export default function SignupForm() {
       </section>
       <section className="mb-3">
         <SignupInput
+          className="w-full"
           placeholder="이름 (닉네임X)"
           register={{ ...register('name', { required: true }) }}
         />
       </section>
       <section className="mb-3">
         <SignupInput
+          className={`${watch('student_id_auth') ? 'bg-light-silver text-silver' : ''}`}
           placeholder="학번 (8자리)"
+          disabled={watch('student_id_auth')}
           register={{ ...register('student_id', { required: true }) }}
         />
+        <button
+            className={`ml-3 text-sm rounded-md px-3 py-1 ${watch('student_id_auth') || loading ? 'bg-blue text-white' : 'border border-blue text-blue'}`}
+            type="button"
+            onClick={() => existStudentIdAuthHandler(watch('student_id'))}
+            disabled={watch('student_id_auth') || loading}
+          >중복확인</button>
       </section>
       <section className="grid grid-cols-2 gap-5">
         <select
@@ -269,6 +309,7 @@ export default function SignupForm() {
       </section>
       <section className="mb-3">
         <SignupInput
+          className="w-full"
           placeholder="전화번호 ('-' 제외하고 입력)"
           register={{ ...register('phone_number') }}
         />
@@ -341,6 +382,7 @@ interface FormInputs {
   password_confirm: string;
   name: string;
   student_id: string;
+  student_id_auth: boolean;
   school_college: string;
   school_department: string;
   phone_number: string;

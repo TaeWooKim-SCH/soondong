@@ -26,8 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const connectDb = await db.promise().getConnection();
     const result = await connectDb.query(
-      `insert into tb_member(id, student_id, password, name, phone_number, school_college, school_department)
-      values('${body.id}', '${body.student_id}', '${body.password}', '${body.name}', '${body.phone_number}', '${body.school_college}', '${body.school_department}');`
+      `insert into tb_member(id, student_id, password, name, phone_number, school_college, school_department, school_email)
+      values('${body.id}', '${body.student_id}', '${body.password}', '${body.name}', '${body.phone_number}', '${body.school_college}', '${body.school_department}', '${body.school_email}');`
     );
     connectDb.release();
     return res.status(200).json(body);
@@ -45,4 +45,5 @@ interface SignupFormData {
   student_id: string;
   school_college: string;
   school_department: string;
+  school_email: string;
 }
