@@ -58,7 +58,7 @@ export default function Carousel({ clubsData }: PropsType) {
           <article className="w-[100vw] h-full flex justify-center items-center" key={clubInfo.club_id}>
             <div className="max-w-[600px] flex justify-center items-center px-5 sm:item-start sm:px-0">
               <Image
-                className="w-[150px] h-[200px] object-cover rounded-md shadow-lg sm:w-[210px] sm:h-[280px] md:w-[240px] md:h-[320px]"
+                className="w-[150px] h-[200px] object-cover rounded-md shadow-lg md:w-[240px] md:h-[320px]"
                 src={clubInfo.club_img_url}
                 width={500}
                 height={0}
@@ -85,10 +85,14 @@ export default function Carousel({ clubsData }: PropsType) {
           </article>
         ))}
       </div>
-      <div className="absolute top-1/2 left-10 -translate-y-1/2 arrowLeftContainer cursor-pointer hidden md:block" onClick={arrowLeftClickHandler}>
+      <div className="absolute top-1/2 left-10 -translate-y-1/2 arrowLeftContainer cursor-pointer hidden duration-300 md:block hover:scale-[1.2]"
+        onClick={arrowLeftClickHandler}
+      >
         <FaAngleLeft size="40" color="#6D6C6C" />
       </div>
-      <div className="absolute top-1/2 right-10 -translate-y-1/2 arrowRightContainer cursor-pointer hidden md:block" onClick={arrowRightClickHandler}>
+      <div className="absolute top-1/2 right-10 -translate-y-1/2 arrowRightContainer cursor-pointer hidden duration-300 md:block hover:scale-[1.2]"
+        onClick={arrowRightClickHandler}
+      >
         <FaAngleRight size="40" color="#6D6C6C" />
       </div>
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center">
