@@ -32,12 +32,13 @@ export default function ClubJoinBtn({ clubId, isForm, joinForm }: PropsType) {
       if (res.status === 401) {
         setIsLoading(false);
         return alert('로그인 후 시도해주세요.');
-      }
-      else if (!res.ok) {
+      } else if (res.status === 409) {
+        setIsLoading(false);
+        return alert('이미 신청된 동아리입니다.');
+      } else if (!res.ok) {
         setIsLoading(false);
         throw new Error('Failed to fetch data');
-      }
-      else {
+      } else {
         setIsLoading(false);
         const json = await res.json();
         const confirmUserInfo = confirm(`이름: ${json.name}\n학번: ${json.student_id}\n전화번호: ${json.phone_number}\n단과대: ${json.school_college}\n학과: ${json.school_department}\n\n위 정보가 맞습니까? (일치하지 않는다면 마이페이지에서 정보를 수정해주세요.)`);
