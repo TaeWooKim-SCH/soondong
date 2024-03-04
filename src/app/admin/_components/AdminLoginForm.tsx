@@ -8,10 +8,8 @@ import { RiLock2Fill } from "react-icons/ri";
 
 import { encrypt } from "@/utils/modules";
 import LoadingUI from "../../_components/LoadingUI";
-import { useRouter } from "next/navigation";
 
-export default function LoginForm() {
-  const router = useRouter();
+export default function AdminLoginForm() {
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormInputs>({
     defaultValues: { id: '', password: ''}
   });
@@ -19,7 +17,8 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     if (!data.id) {
       return alert('아이디를 입력해주세요.');
-    } else if (!data.password) {
+    }
+    else if (!data.password) {
       return alert('비밀번호를 입력해주세요.');
     }
     try {
@@ -32,7 +31,7 @@ export default function LoginForm() {
         return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       }
       else {
-        router.push('/home');
+        return;
       }
     } catch (err) {
       console.error('로그인 실패', err);
