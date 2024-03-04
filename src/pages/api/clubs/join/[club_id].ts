@@ -26,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           `SELECT user_id FROM tb_club_members WHERE user_id = '${token.id}' AND club_id = '${club_id}'`
         );
         if (duplication[0].length >= 1) {
+          connectDb.release();
           return res.status(409).send('중복 가입');
         }
         

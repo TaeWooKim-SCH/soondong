@@ -1,7 +1,6 @@
 'use client'
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 import { throttle } from "lodash";
 import { FaUser } from "react-icons/fa";
 import { RiLock2Fill } from "react-icons/ri";
@@ -22,16 +21,19 @@ export default function AdminLoginForm() {
       return alert('비밀번호를 입력해주세요.');
     }
     try {
-      const res = await signIn('credentials', {
-        id: encrypt(data.id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY),
-        password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY),
-        redirect: false
-      });
-      if (res?.error) {
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: encrypt(data.id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY),
+          password: encrypt(data.password, process.env.NEXT_PUBLIC_AES_PW_SECRET_KEY)
+        })
+      })
+      if (!res.ok) {
         return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       }
       else {
-        return;
+        return alert('로그인 성공');
       }
     } catch (err) {
       console.error('로그인 실패', err);
