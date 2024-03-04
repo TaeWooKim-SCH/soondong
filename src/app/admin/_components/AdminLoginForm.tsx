@@ -16,8 +16,7 @@ export default function AdminLoginForm() {
   const onSubmit: SubmitHandler<FormInputs> = throttle(async (data) => {
     if (!data.id) {
       return alert('아이디를 입력해주세요.');
-    }
-    else if (!data.password) {
+    } else if (!data.password) {
       return alert('비밀번호를 입력해주세요.');
     }
     try {
@@ -31,8 +30,7 @@ export default function AdminLoginForm() {
       })
       if (!res.ok) {
         return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-      }
-      else {
+      } else {
         return alert('로그인 성공');
       }
     } catch (err) {
