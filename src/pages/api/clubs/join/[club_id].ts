@@ -9,6 +9,7 @@ const secret = process.env.NEXT_AUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const token = await getToken({ req, secret });
+  const { club_id } = req.query;
 
   // Unauthorized
   if (!token) {
@@ -19,6 +20,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'GET':
       try {
         const connectDb = await db.promise().getConnection();
+
+        // 중복 가입 방지
+        const duplication = await connectDb.query<RowDataPacket[]>(
+          `SELECT user_id FROM tb_club_members WHERE user_id = '${token.id}' AND club_id = '${club_id}'`
+        );
+        if (duplication[0].length >= 1) {
+          return res.status(409).send('중복 가입');
+        }
+        
+        // 유저 정보 재확인
         const [ row ] = await connectDb.query<RowDataPacket[]>(
           `SELECT student_id, name, phone_number, school_college, school_department
           FROM tb_member where id = '${token.id}'`
@@ -31,7 +42,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     case 'POST':
       try {
-        const { club_id } = req.query;
         const body = req.body;
         const join_id = generateRandomString();
         const connectDb = await db.promise().getConnection();
