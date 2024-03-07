@@ -75,12 +75,10 @@ export default function SignupForm() {
       setLoading(false);
       if (res.status === 409) {
         return alert('이미 가입된 아이디입니다.');
-      }
-      else if (res.status === 200) {
+      } else if (res.status === 200) {
         setValue('id_auth', true);
         return alert('사용 가능한 아이디입니다.');
-      }
-      else {
+      } else {
         return alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
       }
     } catch (err) {
@@ -105,12 +103,10 @@ export default function SignupForm() {
       setLoading(false);
       if (res.status === 409) {
         return alert('이미 가입된 학번입니다.');
-      }
-      else if (res.status === 200) {
+      } else if (res.status === 200) {
         setValue('student_id_auth', true);
         return alert('사용 가능한 학번입니다.');
-      }
-      else {
+      } else {
         return alert('알 수 없는 오류가 발생했습니다. 다시 시도해주세요.');
       }
     } catch (err) {
@@ -198,8 +194,7 @@ export default function SignupForm() {
       if (res.ok) {
         alert('가입이 완료되었습니다.');
         return router.push('/login');
-      }
-      else {
+      } else {
         return alert('가입에 실패하였습니다.');
       }
     } catch (err) {
