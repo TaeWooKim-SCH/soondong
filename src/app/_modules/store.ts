@@ -11,9 +11,25 @@ export const useToggle = create<ToggleStore>((set) => ({
   }
 }));
 
+export const useAdmin = create<IsAdminStore>((set) => ({
+  isAdmin: false,
+  adminLogin: () => {
+    set((state) => ({ isAdmin: true }));
+  },
+  adminLogout: () => {
+    set((state) => ({ isAdmin: false }));
+  }
+}));
+
 interface ToggleStore {
   recruiting: boolean,
   joined: boolean,
   updateRecuiting: () => void;
   updateJoined: () => void;
+}
+
+interface IsAdminStore {
+  isAdmin: boolean;
+  adminLogin: () => void;
+  adminLogout: () => void;
 }

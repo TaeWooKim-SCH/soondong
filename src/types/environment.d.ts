@@ -20,5 +20,7 @@ namespace NodeJS {
     AWS_ACCESS_KEY_ID: string;
     AWS_ACCESS_SECRET_KEY_ID: string;
     AWS_BUCKET_NAME: string;
+    ADMIN_ID: string;
+    ADMIN_PW: string;
   }
 }

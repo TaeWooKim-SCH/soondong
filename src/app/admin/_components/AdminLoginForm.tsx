@@ -8,9 +8,11 @@ import { RiLock2Fill } from "react-icons/ri";
 
 import { encrypt } from "@/utils/modules";
 import LoadingUI from "../../_components/LoadingUI";
+import { useAdmin } from "@/app/_modules/store";
 
 export default function AdminLoginForm() {
   const router = useRouter();
+  const { adminLogin } = useAdmin();
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<FormInputs>({
     defaultValues: { id: '', password: ''}
   });
@@ -33,7 +35,8 @@ export default function AdminLoginForm() {
       if (!res.ok) {
         return alert('아이디 또는 비밀번호가 일치하지 않습니다.');
       } else {
-        router.push('/admin/home');
+        adminLogin();
+        router.push(`/admin/home?id=${encodeURIComponent(encrypt(data.id, process.env.NEXT_PUBLIC_AES_ID_SECRET_KEY))}`);
       }
     } catch (err) {
       console.error('로그인 실패', err);
